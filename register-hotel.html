@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Registration | StayIndia Partner Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<!-- NAVBAR (minimal) -->
+<header class="navbar scrolled" id="navbar" style="position:relative">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">S</div>
+      <div class="logo-text-wrap"><span class="logo-main">StayIndia</span><span class="logo-sub">Partner Portal</span></div>
+    </a>
+    <div style="font-size:.82rem;color:var(--gray-400)">🔒 Secure · Private · Invite Only</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="register-hero">
+  <div class="container">
+    <div class="register-badge">🔒 Private Registration Portal — Invite Only</div>
+    <h1>List Your Hotel on StayIndia</h1>
+    <p>Get discovered by lakhs of travellers searching for hotels across India. Submit your hotel details, upload real photos, and our team will review and approve within 48 hours.</p>
+    <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:rgba(255,255,255,.6)">
+        <span style="color:var(--green)">✓</span> First Month FREE
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:rgba(255,255,255,.6)">
+        <span style="color:var(--green)">✓</span> Photo Verified Listing
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:rgba(255,255,255,.6)">
+        <span style="color:var(--green)">✓</span> Direct Contact — Zero Commission
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:rgba(255,255,255,.6)">
+        <span style="color:var(--green)">✓</span> Approved Within 48 Hours
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN OVERVIEW -->
+<section style="padding:3rem 0;background:rgba(255,122,0,.03);border-bottom:1px solid var(--navy-border)">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:900px;margin:0 auto">
+      <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-lg);padding:1.5rem;text-align:center">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gray-400);margin-bottom:.5rem">Basic</div>
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--white)">₹399<span style="font-size:1rem;color:var(--gray-400)">/mo</span></div>
+        <div style="font-size:.78rem;color:var(--gray-400);margin:.5rem 0 1rem">Listed in city search · 5 photos · Direct call button</div>
+        <div style="font-size:.72rem;color:var(--green);font-weight:700">🎁 First month FREE</div>
+      </div>
+      <div style="background:var(--navy-card);border:2px solid var(--saffron);border-radius:var(--r-lg);padding:1.5rem;text-align:center;position:relative">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--saffron);color:var(--white);font-size:.68rem;font-weight:800;padding:.25rem 1rem;border-radius:var(--r-full);white-space:nowrap">⭐ Most Popular</div>
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--saffron);margin-bottom:.5rem">Priority</div>
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--saffron)">₹899<span style="font-size:1rem;color:var(--gray-400)">/mo</span></div>
+        <div style="font-size:.78rem;color:var(--gray-400);margin:.5rem 0 1rem">First in city results · Priority badge · WhatsApp button</div>
+        <div style="font-size:.72rem;color:var(--green);font-weight:700">🎁 First month FREE</div>
+      </div>
+      <div style="background:var(--navy-card);border:1px solid var(--gold);border-radius:var(--r-lg);padding:1.5rem;text-align:center">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gold-lite);margin-bottom:.5rem">Spotlight ✨</div>
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--gold)">₹1499<span style="font-size:1rem;color:var(--gray-400)">/mo</span></div>
+        <div style="font-size:.78rem;color:var(--gray-400);margin:.5rem 0 1rem">Homepage feature · Always #1 · Unlimited photos · Reports</div>
+        <div style="font-size:.72rem;color:var(--green);font-weight:700">🎁 First month FREE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRATION FORM -->
+<section style="padding:3rem 0 6rem">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:start;max-width:1100px;margin:0 auto">
+
+      <!-- Left: Info -->
+      <div>
+        <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-xl);padding:1.75rem;margin-bottom:1.25rem">
+          <h3 style="font-family:var(--font-display);font-size:1.2rem;color:var(--white);margin-bottom:1rem">How It Works</h3>
+          <div style="display:flex;flex-direction:column;gap:1rem">
+            <div style="display:flex;gap:.875rem;align-items:flex-start">
+              <div style="width:32px;height:32px;background:var(--saffron-dim);border:1px solid rgba(255,122,0,.25);border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--saffron);font-size:.875rem;flex-shrink:0">1</div>
+              <div><div style="font-weight:700;color:var(--white);font-size:.9rem;margin-bottom:.2rem">Fill this form</div><div style="font-size:.8rem;color:var(--gray-400)">Hotel details, contact info, amenities</div></div>
+            </div>
+            <div style="display:flex;gap:.875rem;align-items:flex-start">
+              <div style="width:32px;height:32px;background:var(--saffron-dim);border:1px solid rgba(255,122,0,.25);border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--saffron);font-size:.875rem;flex-shrink:0">2</div>
+              <div><div style="font-weight:700;color:var(--white);font-size:.9rem;margin-bottom:.2rem">Upload real photos</div><div style="font-size:.8rem;color:var(--gray-400)">Min 3 photos of rooms, lobby, facilities</div></div>
+            </div>
+            <div style="display:flex;gap:.875rem;align-items:flex-start">
+              <div style="width:32px;height:32px;background:var(--saffron-dim);border:1px solid rgba(255,122,0,.25);border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--saffron);font-size:.875rem;flex-shrink:0">3</div>
+              <div><div style="font-weight:700;color:var(--white);font-size:.9rem;margin-bottom:.2rem">We review & approve</div><div style="font-size:.8rem;color:var(--gray-400)">Photo verification within 48 hours</div></div>
+            </div>
+            <div style="display:flex;gap:.875rem;align-items:flex-start">
+              <div style="width:32px;height:32px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green);font-size:.875rem;flex-shrink:0">✓</div>
+              <div><div style="font-weight:700;color:var(--white);font-size:.9rem;margin-bottom:.2rem">Your hotel goes live!</div><div style="font-size:.8rem;color:var(--gray-400)">First month free — travellers find you</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:var(--r-lg);padding:1.25rem">
+          <div style="font-size:.78rem;font-weight:700;color:var(--gold-lite);margin-bottom:.5rem">💡 Important</div>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.65">Only hotels with real, clear photos will be approved. No stock images. Photos must show actual rooms, lobby, and facilities of YOUR hotel.</p>
+        </div>
+
+        <div style="margin-top:1.25rem;background:rgba(255,255,255,.03);border:1px solid var(--navy-border);border-radius:var(--r-lg);padding:1.25rem">
+          <div style="font-size:.78rem;font-weight:700;color:var(--gray-400);margin-bottom:.75rem">📞 Need Help?</div>
+          <div style="font-size:.875rem;color:rgba(255,255,255,.6);margin-bottom:.5rem">Call or WhatsApp our partner support team:</div>
+          <a href="tel:+911234567890" style="color:var(--saffron);font-weight:700;font-size:.95rem">+91 12345 67890</a>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="register-form-card">
+        <form id="hotelRegistrationForm" novalidate>
+
+          <!-- OWNER DETAILS -->
+          <div style="margin-bottom:1.75rem">
+            <div class="form-section-title">👤 Owner / Manager Details</div>
+            <div class="form-grid-2" style="margin-bottom:1rem">
+              <div class="form-field">
+                <label>Full Name *</label>
+                <input type="text" class="form-input" name="ownerName" placeholder="Ramesh Kumar Sharma" required>
+              </div>
+              <div class="form-field">
+                <label>Mobile Number *</label>
+                <input type="tel" class="form-input" name="ownerPhone" placeholder="+91 98765 43210" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label>Email Address *</label>
+                <input type="email" class="form-input" name="ownerEmail" placeholder="owner@hotel.com" required>
+              </div>
+              <div class="form-field">
+                <label>WhatsApp Number</label>
+                <input type="tel" class="form-input" name="ownerWhatsapp" placeholder="Same as mobile">
+              </div>
+            </div>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- HOTEL DETAILS -->
+          <div style="margin-bottom:1.75rem">
+            <div class="form-section-title">🏨 Hotel Information</div>
+            <div class="form-field" style="margin-bottom:1rem">
+              <label>Hotel Name *</label>
+              <input type="text" class="form-input" name="hotelName" placeholder="Ganga View Palace Hotel" required>
+            </div>
+            <div class="form-grid-2" style="margin-bottom:1rem">
+              <div class="form-field">
+                <label>Hotel Type *</label>
+                <select class="form-input" name="hotelType" required>
+                  <option value="">Select Type</option>
+                  <option value="hotel">Hotel (2-3 Star)</option>
+                  <option value="hotel-premium">Hotel (4-5 Star)</option>
+                  <option value="resort">Resort</option>
+                  <option value="guesthouse">Guest House</option>
+                  <option value="dharamshala">Dharamshala</option>
+                  <option value="ashram">Ashram / Yoga Retreat</option>
+                  <option value="homestay">Homestay</option>
+                  <option value="hostel">Hostel / Dormitory</option>
+                  <option value="camp">Adventure Camp / Glamping</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Starting Price (₹/night) *</label>
+                <input type="number" class="form-input" name="hotelPrice" placeholder="800" min="100" required>
+              </div>
+            </div>
+            <div class="form-grid-3" style="margin-bottom:1rem">
+              <div class="form-field">
+                <label>Country *</label>
+                <select class="form-input" name="country" required>
+                  <option value="india">India</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>State *</label>
+                <select class="form-input" id="regState" name="state" required>
+                  <option value="">Select State</option>
+                  <option value="uttarakhand">Uttarakhand</option>
+                  <option value="delhi">Delhi</option>
+                  <option value="rajasthan">Rajasthan</option>
+                  <option value="himachal">Himachal Pradesh</option>
+                  <option value="up">Uttar Pradesh</option>
+                  <option value="maharashtra">Maharashtra</option>
+                  <option value="goa">Goa</option>
+                  <option value="karnataka">Karnataka</option>
+                  <option value="tamil-nadu">Tamil Nadu</option>
+                  <option value="kerala">Kerala</option>
+                  <option value="other">Other State</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>PIN Code *</label>
+                <input type="text" class="form-input" name="pin" placeholder="249401" maxlength="6" required>
+              </div>
+            </div>
+            <div class="form-grid-2" style="margin-bottom:1rem">
+              <div class="form-field">
+                <label>City *</label>
+                <input type="text" class="form-input" id="regCity" name="city" placeholder="Haridwar" required>
+              </div>
+              <div class="form-field">
+                <label>Area / Locality *</label>
+                <input type="text" class="form-input" name="area" placeholder="Har Ki Pauri Road" required>
+              </div>
+            </div>
+            <div class="form-field" style="margin-bottom:1rem">
+              <label>Full Address *</label>
+              <input type="text" class="form-input" name="address" placeholder="Near Har Ki Pauri, Railway Road, Haridwar, Uttarakhand 249401" required>
+            </div>
+            <div class="form-grid-2" style="margin-bottom:1rem">
+              <div class="form-field">
+                <label>Hotel Phone *</label>
+                <input type="tel" class="form-input" name="hotelPhone" placeholder="01334-123456" required>
+              </div>
+              <div class="form-field">
+                <label>Hotel WhatsApp</label>
+                <input type="tel" class="form-input" name="hotelWhatsapp" placeholder="+91 98765 43210">
+              </div>
+            </div>
+            <div class="form-grid-2" style="margin-bottom:1rem">
+              <div class="form-field">
+                <label>Check-in Time</label>
+                <input type="text" class="form-input" name="checkIn" placeholder="12:00 PM">
+              </div>
+              <div class="form-field">
+                <label>Check-out Time</label>
+                <input type="text" class="form-input" name="checkOut" placeholder="11:00 AM">
+              </div>
+            </div>
+            <div class="form-field" style="margin-bottom:1rem">
+              <label>Hotel Description *</label>
+              <textarea class="form-input" name="description" rows="4" placeholder="Describe your hotel — what makes it unique, what travellers love about it, nearby landmarks, specialties..." required style="resize:vertical;min-height:100px"></textarea>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label>Google Maps Link</label>
+                <input type="url" class="form-input" name="mapsLink" placeholder="https://maps.google.com/...">
+              </div>
+              <div class="form-field">
+                <label>Website (optional)</label>
+                <input type="url" class="form-input" name="website" placeholder="https://yourhotel.com">
+              </div>
+            </div>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- SOCIAL MEDIA -->
+          <div style="margin-bottom:1.75rem">
+            <div class="form-section-title">📱 Social Media (optional)</div>
+            <div class="form-grid-3">
+              <div class="form-field">
+                <label>Facebook Page</label>
+                <input type="url" class="form-input" name="facebook" placeholder="fb.com/yourhotel">
+              </div>
+              <div class="form-field">
+                <label>Instagram</label>
+                <input type="text" class="form-input" name="instagram" placeholder="@yourhotel">
+              </div>
+              <div class="form-field">
+                <label>YouTube Channel</label>
+                <input type="url" class="form-input" name="youtube" placeholder="youtube.com/...">
+              </div>
+            </div>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- AMENITIES -->
+          <div style="margin-bottom:1.75rem">
+            <div class="form-section-title">✅ Amenities Available</div>
+            <div class="amenity-checkboxes">
+              <label class="amenity-cb"><input type="checkbox" name="amenity_ac"> ❄️ AC Rooms</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_wifi"> 📶 Free WiFi</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_restaurant"> 🍽️ Restaurant</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_parking"> 🅿️ Parking</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_veg"> 🙏 Pure Veg Food</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_pool"> 🏊 Swimming Pool</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_spa"> 🧖 Spa / Ayurveda</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_yoga"> 🧘 Yoga / Meditation</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_ganga"> 🌊 Ganga / River View</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_tv"> 📺 TV in Room</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_water"> 🚿 Hot Water</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_lift"> 🛗 Lift / Elevator</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_room_service"> 🛎️ Room Service</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_24hr"> 🕐 24hr Reception</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_gym"> 💪 Gym / Fitness</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_bonfire"> 🔥 Bonfire Area</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_pickup"> 🚗 Airport Pickup</label>
+              <label class="amenity-cb"><input type="checkbox" name="amenity_conf"> 👥 Conference Room</label>
+            </div>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- GUEST TYPE -->
+          <div style="margin-bottom:1.75rem">
+            <div class="form-section-title">👥 Best Suited For</div>
+            <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+              <label class="amenity-cb"><input type="checkbox" name="tag_family"> 👨‍👩‍👧 Family Groups</label>
+              <label class="amenity-cb"><input type="checkbox" name="tag_couple"> 💑 Couples</label>
+              <label class="amenity-cb"><input type="checkbox" name="tag_solo"> 🎒 Solo Travellers</label>
+              <label class="amenity-cb"><input type="checkbox" name="tag_pilgrim"> 🕉️ Pilgrims</label>
+              <label class="amenity-cb"><input type="checkbox" name="tag_business"> 💼 Business Travellers</label>
+              <label class="amenity-cb"><input type="checkbox" name="tag_adventure"> 🏕️ Adventure Seekers</label>
+            </div>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- PHOTOS -->
+          <div style="margin-bottom:1.75rem">
+            <div class="form-section-title">📷 Hotel Photos (Required for Approval)</div>
+            <div class="upload-zone" id="photoUploadZone">
+              <div class="upload-icon">📷</div>
+              <p class="upload-text">
+                <strong>Click to upload</strong> or drag & drop<br>
+                <small style="color:var(--gray-400)">JPG, PNG · Max 5MB each · Minimum 3 photos required</small>
+              </p>
+              <input type="file" id="photoInput" name="photos" multiple accept="image/jpeg,image/png,image/webp" style="display:none">
+            </div>
+            <p style="font-size:.78rem;color:var(--gray-400);margin-top:.75rem">📸 Please upload real photos of your hotel. Include: rooms, lobby, exterior, restaurant, and views. Listings with stock images will be rejected.</p>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- PLAN SELECTION -->
+          <div style="margin-bottom:1.75rem">
+            <div class="form-section-title">📋 Choose Your Listing Plan</div>
+            <div class="plan-radio-group">
+              <label class="plan-radio">
+                <input type="radio" name="plan" value="basic">
+                <div class="plan-radio-info">
+                  <div class="plan-radio-name">Basic</div>
+                  <div class="plan-radio-desc">Listed in city search · 5 photos · Direct call button</div>
+                </div>
+                <div class="plan-radio-price">₹399/mo</div>
+              </label>
+              <label class="plan-radio selected">
+                <input type="radio" name="plan" value="priority" checked>
+                <div class="plan-radio-info">
+                  <div class="plan-radio-name">⭐ Priority <span style="font-size:.72rem;background:rgba(255,122,0,.15);color:var(--saffron);padding:.1rem .5rem;border-radius:var(--r-full)">Recommended</span></div>
+                  <div class="plan-radio-desc">Top of city results · Priority badge · WhatsApp button · 20 photos</div>
+                </div>
+                <div class="plan-radio-price">₹899/mo</div>
+              </label>
+              <label class="plan-radio">
+                <input type="radio" name="plan" value="spotlight">
+                <div class="plan-radio-info">
+                  <div class="plan-radio-name">✨ Spotlight</div>
+                  <div class="plan-radio-desc">Homepage feature · Always #1 · Unlimited photos · Monthly reports</div>
+                </div>
+                <div class="plan-radio-price">₹1499/mo</div>
+              </label>
+            </div>
+            <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:var(--r-md);padding:1rem;margin-top:.875rem;font-size:.82rem;color:rgba(255,255,255,.7);text-align:center">
+              🎁 <strong style="color:var(--green)">ALL PLANS</strong> include your first month completely FREE. No payment until after approval.
+            </div>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- TERMS -->
+          <div style="margin-bottom:1.75rem">
+            <label class="amenity-cb" style="align-items:flex-start;font-size:.82rem">
+              <input type="checkbox" name="terms" required style="margin-top:.15rem;flex-shrink:0">
+              <span>I confirm that all information submitted is accurate and the photos belong to my property. I understand that false information will result in rejection and permanent ban from the platform.</span>
+            </label>
+          </div>
+
+          <!-- SUBMIT -->
+          <button type="submit" class="btn-primary ripple btn-full" style="padding:1rem;font-size:1rem">
+            ✅ Submit Registration Application
+          </button>
+          <p style="font-size:.78rem;color:var(--gray-400);text-align:center;margin-top:.875rem">
+            Our team will review your application within 48 business hours. You'll be contacted via phone and email once approved. No payment is taken until after approval and free trial period.
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" style="margin-top:0">
+  <div class="container">
+    <div style="text-align:center;padding:2rem 0">
+      <a href="index.html" class="footer-logo" style="justify-content:center;margin-bottom:.75rem">
+        <div class="logo-mark">S</div><span>StayIndia</span>
+      </a>
+      <p style="font-size:.82rem;color:rgba(255,255,255,.3)">© 2026 StayIndia Hotel Directory · Partner Portal · Private</p>
+    </div>
+  </div>
+</footer>
+
+<script src="firebase-config.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  initRegisterPage();
+  initBackToTop();
+
+  // Plan radio styling
+  document.querySelectorAll('.plan-radio input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.plan-radio').forEach(r => r.classList.remove('selected'));
+      radio.closest('.plan-radio').classList.add('selected');
+    });
+  });
+
+  // Amenity checkbox hover style
+  document.querySelectorAll('.amenity-cb input').forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('.amenity-cb').style.borderColor = cb.checked ? 'rgba(255,122,0,.4)' : '';
+      cb.closest('.amenity-cb').style.color = cb.checked ? 'var(--white)' : '';
+    });
+  });
+});
+</script>
+</body>
+</html>
