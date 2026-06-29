@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Details | StayIndia</title>
+<meta name="description" content="View hotel details, photos, amenities, reviews, and contact information.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- FLOATING BUTTONS -->
+<a href="#" id="fabCall" class="fab fab-call" aria-label="Call hotel">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.71 19.79 19.79 0 01.18 1.11 2 2 0 012.16 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.27-.55a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+</a>
+<a href="#" id="fabWA" class="fab fab-whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp hotel">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">S</div>
+      <div class="logo-text-wrap"><span class="logo-main">StayIndia</span><span class="logo-sub">Hotel Directory</span></div>
+    </a>
+    <nav class="nav-links">
+      <a href="hotels.html" class="nav-link">Browse Hotels</a>
+      <a href="cities.html" class="nav-link">Cities</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn-ghost" id="loginBtn" onclick="openAuth('login')">Sign In</button>
+      <button class="btn-primary ripple" onclick="openAuth('register')">Join Free</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <nav>
+      <a href="hotels.html" class="mobile-link">🏨 Browse Hotels</a>
+      <a href="cities.html" class="mobile-link">🗺️ Cities</a>
+      <a href="about.html" class="mobile-link">ℹ️ About</a>
+      <a href="contact.html" class="mobile-link">📞 Contact</a>
+    </nav>
+    <div class="mobile-auth">
+      <button class="btn-ghost btn-full" onclick="openAuth('login')">Sign In</button>
+      <button class="btn-primary btn-full ripple" onclick="openAuth('register')">Join Free</button>
+    </div>
+  </div>
+</header>
+
+<!-- DETAIL HERO / GALLERY -->
+<div class="detail-hero" id="detailHero">
+  <div id="galleryMain" class="detail-gallery">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
+<!-- DETAIL CONTENT -->
+<section style="padding:0 0 5rem">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <div style="padding:1.25rem 0;font-size:.8rem;color:var(--gray-400);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+      <a href="index.html" style="color:var(--gray-400)">Home</a> ›
+      <a href="hotels.html" style="color:var(--gray-400)">Hotels</a> ›
+      <span id="breadcrumbCity" style="color:var(--gray-400)"></span> ›
+      <span id="breadcrumbName" style="color:var(--saffron)"></span>
+    </div>
+
+    <div class="detail-layout">
+
+      <!-- MAIN COLUMN -->
+      <div class="detail-main">
+
+        <!-- Name + Badges -->
+        <div id="hotelBadges" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem"></div>
+        <h1 class="detail-name" id="hotelName">Loading…</h1>
+        <div class="detail-meta" id="hotelRating"></div>
+        <div class="detail-location" id="hotelLocation"></div>
+
+        <!-- Action row (mobile) -->
+        <div style="display:flex;gap:.75rem;margin:1.25rem 0;flex-wrap:wrap" class="mobile-actions-row">
+          <button class="hc-fav" style="width:auto;padding:.5rem 1rem;border-radius:var(--r-full);display:flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)"
+            id="detailFavBtn" onclick="toggleDetailFav()">♡ Save</button>
+          <button onclick="shareCurrentHotel()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);padding:.5rem 1rem;border-radius:var(--r-full);font-size:.82rem;font-weight:700;cursor:pointer">🔗 Share</button>
+          <button onclick="reportHotel()" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#EF4444;padding:.5rem 1rem;border-radius:var(--r-full);font-size:.82rem;font-weight:700;cursor:pointer">⚠️ Report</button>
+        </div>
+
+        <!-- TABS -->
+        <div class="detail-tabs" role="tablist">
+          <button class="detail-tab active" data-target="tabOverview" role="tab" aria-selected="true">Overview</button>
+          <button class="detail-tab" data-target="tabAmenities" role="tab">Amenities</button>
+          <button class="detail-tab" data-target="tabRooms" role="tab">Rooms</button>
+          <button class="detail-tab" data-target="tabLocation" role="tab">Location</button>
+          <button class="detail-tab" data-target="tabReviews" role="tab">Reviews</button>
+          <button class="detail-tab" data-target="tabPolicies" role="tab">Policies</button>
+        </div>
+
+        <!-- TAB: OVERVIEW -->
+        <div class="detail-content active" id="tabOverview">
+          <h3 style="font-family:var(--font-display);font-size:1.25rem;color:var(--white);margin-bottom:.875rem">About this Hotel</h3>
+          <p id="hotelDescription" style="color:rgba(255,255,255,.65);line-height:1.8;font-size:.95rem;margin-bottom:2rem"></p>
+
+          <!-- Quick Info Grid -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem" id="quickInfoGrid">
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1rem;text-align:center">
+              <div style="font-size:1.5rem;margin-bottom:.35rem">🕐</div>
+              <div style="font-size:.72rem;color:var(--gray-400);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Check-in</div>
+              <div style="font-size:.95rem;font-weight:700;color:var(--white)" id="qi-checkin">—</div>
+            </div>
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1rem;text-align:center">
+              <div style="font-size:1.5rem;margin-bottom:.35rem">🚪</div>
+              <div style="font-size:.72rem;color:var(--gray-400);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Check-out</div>
+              <div style="font-size:.95rem;font-weight:700;color:var(--white)" id="qi-checkout">—</div>
+            </div>
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1rem;text-align:center">
+              <div style="font-size:1.5rem;margin-bottom:.35rem">🏨</div>
+              <div style="font-size:.72rem;color:var(--gray-400);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Type</div>
+              <div style="font-size:.95rem;font-weight:700;color:var(--white)" id="qi-type">—</div>
+            </div>
+          </div>
+
+          <!-- Top Amenities preview -->
+          <h4 style="font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:.875rem">Top Amenities</h4>
+          <div class="amenity-grid" id="topAmenities"></div>
+        </div>
+
+        <!-- TAB: AMENITIES -->
+        <div class="detail-content" id="tabAmenities">
+          <h3 style="font-family:var(--font-display);font-size:1.25rem;color:var(--white);margin-bottom:1.25rem">All Amenities</h3>
+          <div class="amenity-grid" id="hotelAmenities"></div>
+        </div>
+
+        <!-- TAB: ROOMS -->
+        <div class="detail-content" id="tabRooms">
+          <h3 style="font-family:var(--font-display);font-size:1.25rem;color:var(--white);margin-bottom:1.25rem">Room Types</h3>
+          <div style="display:flex;flex-direction:column;gap:1rem" id="roomTypes">
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1.25rem;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700;color:var(--white);margin-bottom:.25rem">Standard Room</div>
+                <div style="font-size:.82rem;color:var(--gray-400)">AC · WiFi · TV · Hot Water</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:1.1rem;font-weight:800;color:var(--saffron)" id="roomPrice1">—</div>
+                <div style="font-size:.72rem;color:var(--gray-400)">per night</div>
+              </div>
+            </div>
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1.25rem;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700;color:var(--white);margin-bottom:.25rem">Deluxe Room</div>
+                <div style="font-size:.82rem;color:var(--gray-400)">AC · WiFi · TV · Balcony · Better View</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:1.1rem;font-weight:800;color:var(--saffron)" id="roomPrice2">—</div>
+                <div style="font-size:.72rem;color:var(--gray-400)">per night</div>
+              </div>
+            </div>
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1.25rem;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700;color:var(--white);margin-bottom:.25rem">Suite / Premium</div>
+                <div style="font-size:.82rem;color:var(--gray-400)">AC · WiFi · Lounge · Best View · Premium Amenities</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:1.1rem;font-weight:800;color:var(--saffron)" id="roomPrice3">—</div>
+                <div style="font-size:.72rem;color:var(--gray-400)">per night</div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:.8rem;color:var(--gray-400);margin-top:1rem">📞 Call or WhatsApp the hotel for exact room availability and pricing.</p>
+        </div>
+
+        <!-- TAB: LOCATION -->
+        <div class="detail-content" id="tabLocation">
+          <h3 style="font-family:var(--font-display);font-size:1.25rem;color:var(--white);margin-bottom:1.25rem">Location & Map</h3>
+          <div id="hotelMap"></div>
+          <div style="margin-top:1.25rem;padding:1.25rem;background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md)">
+            <div style="font-weight:700;color:var(--white);margin-bottom:.75rem">📍 Full Address</div>
+            <div style="font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.7" id="fullAddress">Loading…</div>
+          </div>
+          <div style="margin-top:1rem">
+            <h4 style="font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:.75rem">🗺️ Nearby Attractions</h4>
+            <div id="nearbyAttractions" style="display:flex;flex-direction:column;gap:.5rem"></div>
+          </div>
+        </div>
+
+        <!-- TAB: REVIEWS -->
+        <div class="detail-content" id="tabReviews">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+            <h3 style="font-family:var(--font-display);font-size:1.25rem;color:var(--white)">Guest Reviews</h3>
+            <button onclick="openAuth('register')" class="btn-primary ripple" style="font-size:.82rem;padding:.5rem 1rem">Write a Review</button>
+          </div>
+          <!-- Rating summary -->
+          <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-lg);padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:2rem" id="ratingSummary"></div>
+          <div id="hotelReviews"></div>
+        </div>
+
+        <!-- TAB: POLICIES -->
+        <div class="detail-content" id="tabPolicies">
+          <h3 style="font-family:var(--font-display);font-size:1.25rem;color:var(--white);margin-bottom:1.25rem">Hotel Policies</h3>
+          <div style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1rem">
+              <div style="font-weight:700;color:var(--white);margin-bottom:.35rem">🕐 Check-in / Check-out</div>
+              <div style="font-size:.875rem;color:var(--gray-400)" id="policyCheckin">Check-in: — | Check-out: —</div>
+            </div>
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1rem">
+              <div style="font-weight:700;color:var(--white);margin-bottom:.35rem">🍽️ Food Policy</div>
+              <div style="font-size:.875rem;color:var(--gray-400)" id="policyFood">Contact hotel for food policy details.</div>
+            </div>
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1rem">
+              <div style="font-weight:700;color:var(--white);margin-bottom:.35rem">👤 ID Policy</div>
+              <div style="font-size:.875rem;color:var(--gray-400)">Valid government photo ID required at check-in. Aadhar, PAN, Passport or Driving Licence accepted.</div>
+            </div>
+            <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-md);padding:1rem">
+              <div style="font-weight:700;color:var(--white);margin-bottom:.35rem">🚫 Restrictions</div>
+              <div style="font-size:.875rem;color:var(--gray-400)" id="policyRestrictions">Contact hotel for specific policies on alcohol, smoking, pets, and guests.</div>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem;padding:1rem;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-md)">
+            <div style="display:flex;align-items:flex-start;gap:.75rem">
+              <span style="font-size:1.25rem">⚠️</span>
+              <div>
+                <div style="font-weight:700;color:#EF4444;font-size:.875rem;margin-bottom:.25rem">Report Incorrect Information</div>
+                <p style="font-size:.8rem;color:var(--gray-400);margin-bottom:.75rem">If any information on this page is incorrect, please let us know.</p>
+                <button onclick="reportHotel()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#EF4444;padding:.4rem .875rem;border-radius:var(--r-full);font-size:.78rem;font-weight:700;cursor:pointer">Report Issue</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMILAR HOTELS -->
+        <div style="margin-top:3.5rem">
+          <div class="section-header" style="margin-bottom:1.5rem">
+            <div class="section-eyebrow">You Might Also Like</div>
+            <h2 class="section-title">Similar Hotels <em>Nearby</em></h2>
+          </div>
+          <div class="hotels-grid" id="similarHotels"></div>
+        </div>
+
+      </div><!-- /detail-main -->
+
+      <!-- SIDEBAR -->
+      <aside class="detail-sidebar">
+        <div class="sidebar-price" id="sidebarPrice">
+          <span class="from">Starting from</span>
+          <div class="amount">Loading…</div>
+        </div>
+
+        <div class="sidebar-actions">
+          <a href="#" id="waBtn" class="sidebar-action-full action-wa" target="_blank" rel="noopener">
+            💬 WhatsApp Now
+          </a>
+          <a href="#" id="callBtn" class="sidebar-action-full action-call">
+            📞 Call Now
+          </a>
+          <a href="#" id="dirBtn" class="sidebar-action-full action-dir sidebar-action-full" target="_blank" rel="noopener" style="border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);background:transparent;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.875rem;border-radius:var(--r-full);font-weight:700;font-size:.95rem;cursor:pointer">
+            🗺️ Get Directions
+          </a>
+        </div>
+
+        <div style="font-size:.72rem;color:var(--gray-400);text-align:center;margin-bottom:1.25rem">
+          📞 Direct contact — no booking fees, no commissions
+        </div>
+
+        <div class="sidebar-info" id="sidebarInfo"></div>
+
+        <!-- Claim / Save -->
+        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:.75rem">
+          <button onclick="toggleDetailFav()" id="sidebarFavBtn"
+            style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:.75rem;border-radius:var(--r-full);font-size:.875rem;font-weight:700;cursor:pointer;transition:all .3s">
+            ♡ Save to Favourites
+          </button>
+          <button onclick="shareCurrentHotel()"
+            style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:.75rem;border-radius:var(--r-full);font-size:.875rem;font-weight:700;cursor:pointer">
+            🔗 Share This Hotel
+          </button>
+          <button onclick="claimHotel()"
+            style="width:100%;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);color:var(--gold-lite);padding:.75rem;border-radius:var(--r-full);font-size:.875rem;font-weight:700;cursor:pointer">
+            🏷️ Claim This Hotel
+          </button>
+        </div>
+      </aside>
+
+    </div><!-- /detail-layout -->
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo"><div class="logo-mark">S</div><span>StayIndia</span></a>
+        <p>India's most trusted hotel directory.</p>
+      </div>
+      <div class="footer-col"><h4>Browse More</h4><ul>
+        <li><a href="hotels.html">All Hotels</a></li>
+        <li><a href="cities.html">All Cities</a></li>
+        <li><a href="hotels.html?type=luxury">Luxury Hotels</a></li>
+        <li><a href="hotels.html?budget=budget">Budget Stays</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Company</h4><ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Help</h4><ul>
+        <li><a href="contact.html">Support</a></li>
+        <li><a href="contact.html?subject=report">Report Issue</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 StayIndia · Made with ❤️ in India</p></div>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" style="display:none">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAuth()">✕</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="loginTab" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="modal-tab" id="registerTab" onclick="switchAuthTab('register')">Join Free</button>
+    </div>
+    <div id="loginForm" class="auth-form">
+      <div class="auth-google" onclick="googleLogin()"><svg viewBox="0 0 24 24" width="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Continue with Google</div>
+      <div class="auth-divider"><span>or email</span></div>
+      <div class="form-field"><label>Email</label><input type="email" placeholder="your@email.com" class="form-input"></div>
+      <div class="form-field"><label>Password</label><input type="password" class="form-input"></div>
+      <button class="btn-primary ripple btn-full">Sign In</button>
+    </div>
+    <div id="registerForm" class="auth-form" style="display:none">
+      <div class="auth-google" onclick="googleLogin()"><svg viewBox="0 0 24 24" width="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Continue with Google</div>
+      <div class="auth-divider"><span>or email</span></div>
+      <div class="form-field"><label>Full Name</label><input type="text" class="form-input"></div>
+      <div class="form-field"><label>Email</label><input type="email" class="form-input"></div>
+      <div class="form-field"><label>Password</label><input type="password" class="form-input"></div>
+      <button class="btn-primary ripple btn-full">Create Free Account</button>
+    </div>
+  </div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+let currentDetailHotel = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params  = new URLSearchParams(window.location.search);
+  const hotelId = params.get('id');
+  if (!hotelId) { window.location.href = 'hotels.html'; return; }
+
+  const hotel = getHotelById(hotelId);
+  if (!hotel) { window.location.href = 'hotels.html'; return; }
+  currentDetailHotel = hotel;
+
+  // SEO Meta
+  document.title = `${hotel.name} — ${hotel.city} | StayIndia`;
+  document.querySelector('meta[name="description"]').content =
+    `${hotel.name} in ${hotel.area}, ${hotel.city}. Starting ₹${hotel.price}/night. ${hotel.desc.slice(0,120)}`;
+
+  // Breadcrumb
+  document.getElementById('breadcrumbCity').textContent = hotel.city;
+  document.getElementById('breadcrumbCity').href = `hotels.html?city=${hotel.city.toLowerCase()}`;
+  document.getElementById('breadcrumbName').textContent = hotel.name;
+
+  // Gallery
+  document.getElementById('galleryMain').innerHTML = `
+    <div class="gallery-main" style="background:${hotel.gradient};cursor:default">
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:9rem;filter:drop-shadow(0 8px 30px rgba(0,0,0,.5))">${hotel.emoji}</div>
+    </div>
+    <div class="gallery-side" style="background:${hotel.gradient};opacity:.75">
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem">${hotel.emoji}</div>
+    </div>
+    <div class="gallery-side" style="background:${hotel.gradient};opacity:.5;position:relative">
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem">${hotel.emoji}</div>
+      <div class="gallery-more" onclick="showToast('📷 Upload hotel photos to showcase them here','')">+4 Photos</div>
+    </div>`;
+
+  // Badges
+  document.getElementById('hotelBadges').innerHTML = getBadgeHTML(hotel.badges);
+
+  // Name
+  document.getElementById('hotelName').textContent = hotel.name;
+
+  // Rating
+  document.getElementById('hotelRating').innerHTML = `
+    <div class="detail-rating">
+      <span class="rating-stars">${'★'.repeat(Math.floor(hotel.rating))}${'☆'.repeat(5-Math.floor(hotel.rating))}</span>
+      <span class="rating-score">${hotel.rating}</span>
+      <span class="rating-count">(${hotel.reviewCount.toLocaleString('en-IN')} reviews)</span>
+    </div>`;
+
+  // Location
+  document.getElementById('hotelLocation').innerHTML = `📍 ${hotel.area}, ${hotel.city}, ${hotel.state} — PIN ${hotel.pin}`;
+  document.getElementById('fullAddress').textContent = `${hotel.name}, ${hotel.area}, ${hotel.city}, ${hotel.state} — ${hotel.pin}`;
+  document.getElementById('breadcrumbCity').textContent = hotel.city;
+
+  // Quick info
+  document.getElementById('qi-checkin').textContent  = hotel.checkIn;
+  document.getElementById('qi-checkout').textContent = hotel.checkOut;
+  document.getElementById('qi-type').textContent     = hotel.type.charAt(0).toUpperCase()+hotel.type.slice(1);
+
+  // Description
+  document.getElementById('hotelDescription').textContent = hotel.desc;
+
+  // Amenities (overview - first 6)
+  const topAm = document.getElementById('topAmenities');
+  if (topAm) topAm.innerHTML = hotel.amenities.slice(0,6).map(a =>
+    `<div class="amenity-item has"><span class="a-icon">${AMENITY_ICONS[a]||'✓'}</span>${a}</div>`
+  ).join('');
+
+  // All amenities tab
+  document.getElementById('hotelAmenities').innerHTML = hotel.amenities.map(a =>
+    `<div class="amenity-item has"><span class="a-icon">${AMENITY_ICONS[a]||'✓'}</span>${a}</div>`
+  ).join('');
+
+  // Room prices
+  document.getElementById('roomPrice1').textContent = formatPrice(hotel.price);
+  document.getElementById('roomPrice2').textContent = formatPrice(Math.round(hotel.price * 1.35));
+  document.getElementById('roomPrice3').textContent = formatPrice(Math.round(hotel.price * 1.85));
+
+  // Sidebar
+  document.getElementById('sidebarPrice').innerHTML = `
+    <span class="from">Starting from</span>
+    <div class="amount">${formatPrice(hotel.price)}</div>
+    <span class="per">per night onwards</span>`;
+
+  document.getElementById('waBtn').href   = `https://wa.me/${hotel.whatsapp}?text=Hi, I found ${hotel.name} on StayIndia and would like to know about room availability and pricing.`;
+  document.getElementById('callBtn').href = `tel:${hotel.phone}`;
+  document.getElementById('dirBtn').href  = `https://www.google.com/maps?q=${hotel.lat},${hotel.lng}`;
+  document.getElementById('fabCall').href = `tel:${hotel.phone}`;
+  document.getElementById('fabWA').href   = `https://wa.me/${hotel.whatsapp}`;
+
+  document.getElementById('sidebarInfo').innerHTML = `
+    <div><span>Phone</span><a href="tel:${hotel.phone}" style="color:var(--saffron)">${hotel.phone}</a></div>
+    <div><span>Check-in</span><span>${hotel.checkIn}</span></div>
+    <div><span>Check-out</span><span>${hotel.checkOut}</span></div>
+    <div><span>Type</span><span>${hotel.type.charAt(0).toUpperCase()+hotel.type.slice(1)}</span></div>
+    <div><span>City</span><span>${hotel.city}</span></div>
+    <div><span>PIN Code</span><span>${hotel.pin}</span></div>
+    ${hotel.website ? `<div><span>Website</span><a href="${hotel.website}" target="_blank" style="color:var(--saffron)">Visit ↗</a></div>` : ''}`;
+
+  // Policies
+  document.getElementById('policyCheckin').textContent = `Check-in: ${hotel.checkIn} | Check-out: ${hotel.checkOut}`;
+  document.getElementById('policyFood').textContent    = hotel.tags.includes('veg')
+    ? 'Pure vegetarian / Satvik food only. No non-veg items served on premises.'
+    : 'Both vegetarian and non-vegetarian options available. Contact hotel for specific menu.';
+  document.getElementById('policyRestrictions').textContent = hotel.tags.includes('veg')
+    ? 'No alcohol or non-veg allowed on premises. Peaceful spiritual environment maintained.'
+    : 'Contact hotel directly for policies on alcohol, smoking, and outside guests.';
+
+  // Map
+  document.getElementById('hotelMap').innerHTML = `
+    <div style="height:280px;background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;color:var(--gray-400);position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,122,0,.05),rgba(212,175,55,.05))"></div>
+      <span style="font-size:3rem;position:relative">🗺️</span>
+      <div style="position:relative;text-align:center">
+        <p style="font-size:.875rem;margin-bottom:1rem">${hotel.name}<br><small style="color:var(--gray-400)">${hotel.area}, ${hotel.city}</small></p>
+        <a href="https://www.google.com/maps?q=${hotel.lat},${hotel.lng}" target="_blank" rel="noopener" class="btn-primary ripple" style="font-size:.82rem;padding:.5rem 1.25rem">📍 Open in Google Maps ↗</a>
+      </div>
+    </div>`;
+
+  // Nearby attractions
+  const attractions = {
+    Haridwar:  ['🕉️ Har Ki Pauri (0.5 km)', '🛕 Mansa Devi Temple (2 km)', '🌊 Brahma Kund (0.3 km)', '🎡 Hari Ki Pauri Ghat (0.4 km)'],
+    Rishikesh: ['🧘 Laxman Jhula (1.2 km)', '🌊 Ram Jhula (2.5 km)', '🏕️ Beach Camping (5 km)', '⛪ Swarg Ashram (1.8 km)'],
+    Dehradun:  ['🕐 Clock Tower (1.5 km)', '🌊 Robbers Cave (8 km)', '⛲ Sahastradhara (14 km)', '🏔️ Mussoorie (32 km)'],
+    Mussoorie: ['🛍️ The Mall Road (0.5 km)', '💧 Kempty Falls (12 km)', '🏰 Landour (3 km)', '🚡 Cable Car (1 km)'],
+  };
+  const attrList = attractions[hotel.city] || ['📍 City Centre (1 km)', '🏛️ Local Attractions Nearby'];
+  document.getElementById('nearbyAttractions').innerHTML = attrList.map(a =>
+    `<div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-sm);padding:.75rem 1rem;font-size:.875rem;color:rgba(255,255,255,.65)">${a}</div>`
+  ).join('');
+
+  // Reviews
+  const reviews = REVIEWS[hotelId] || [];
+  const avgRating = reviews.length ? (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1) : hotel.rating;
+  document.getElementById('ratingSummary').innerHTML = `
+    <div style="text-align:center;min-width:100px">
+      <div style="font-family:var(--font-display);font-size:3.5rem;color:var(--saffron);line-height:1">${avgRating}</div>
+      <div style="color:var(--gold);font-size:1.1rem;letter-spacing:.1em">${'★'.repeat(Math.round(avgRating))}</div>
+      <div style="font-size:.72rem;color:var(--gray-400);margin-top:.25rem">${reviews.length || hotel.reviewCount} reviews</div>
+    </div>
+    <div style="flex:1">
+      ${[5,4,3,2,1].map(s => {
+        const cnt = reviews.filter(r=>r.rating===s).length;
+        const pct = reviews.length ? Math.round(cnt/reviews.length*100) : s===5?60:s===4?25:10;
+        return `<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.4rem">
+          <span style="font-size:.78rem;color:var(--gray-400);width:12px">${s}</span>
+          <div style="flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:var(--gold);border-radius:3px;transition:width .8s var(--ease)"></div>
+          </div>
+          <span style="font-size:.72rem;color:var(--gray-400);width:30px">${pct}%</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  document.getElementById('hotelReviews').innerHTML = reviews.length ? reviews.map(r => `
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">${r.name.charAt(0)}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-date">${r.date}</div>
+        </div>
+        <div class="review-stars" style="margin-left:auto">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+      </div>
+      <p class="review-text">${r.text}</p>
+    </div>`).join('') : '<p style="color:var(--gray-400);padding:2rem 0">No reviews yet. Sign in to write the first review!</p>';
+
+  // Similar hotels
+  const similar = getSimilarHotels(hotel, 3);
+  document.getElementById('similarHotels').innerHTML = similar.map(renderHotelCard).join('');
+
+  // Favourites
+  initFavourites();
+  updateFavBtn(hotelId);
+
+  initScrollReveal();
+  initNavbar();
+  initMobileMenu();
+  initBackToTop();
+});
+
+function updateFavBtn(id) {
+  const isFav = favourites.has(id);
+  const btn1  = document.getElementById('detailFavBtn');
+  const btn2  = document.getElementById('sidebarFavBtn');
+  if (btn1) btn1.innerHTML = isFav ? '♥ Saved' : '♡ Save';
+  if (btn2) btn2.textContent = isFav ? '♥ Saved to Favourites' : '♡ Save to Favourites';
+}
+
+function toggleDetailFav() {
+  if (!currentDetailHotel) return;
+  const id = currentDetailHotel.id;
+  if (favourites.has(id)) {
+    favourites.delete(id);
+    showToast('Removed from favourites', '');
+  } else {
+    favourites.add(id);
+    showToast('❤️ Saved to favourites!', 'success');
+  }
+  try { localStorage.setItem('si_favourites', JSON.stringify([...favourites])); } catch {}
+  updateFavBtn(id);
+}
+
+function shareCurrentHotel() {
+  if (currentDetailHotel) shareHotel(currentDetailHotel);
+}
+
+function reportHotel() {
+  showToast('📧 Report sent to our team. Thank you!', 'success');
+}
+
+function claimHotel() {
+  window.location.href = 'contact.html?subject=claim-hotel&hotel=' + (currentDetailHotel?.name || '');
+}
+</script>
+</body>
+</html>

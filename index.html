@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0A0F1E">
+<title>StayIndia — Premium Hotel Directory | Find Hotels Across India</title>
+<meta name="description" content="India's most trusted hotel directory. Find verified hotels in Haridwar, Rishikesh, Dehradun, Delhi & 500+ cities. Browse, compare, and contact hotels directly — no booking fees.">
+<meta name="keywords" content="hotels in India, best hotel Haridwar, hotel directory India, Rishikesh hotels, verified hotels">
+<meta property="og:title" content="StayIndia — Premium Hotel Directory">
+<meta property="og:description" content="Find verified hotels across 500+ Indian cities. No booking fees — contact directly.">
+<meta property="og:type" content="website">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"StayIndia","url":"https://stayindia.com","description":"India's premium hotel directory","potentialAction":{"@type":"SearchAction","target":"https://stayindia.com/hotels?q={search_term_string}","query-input":"required name=search_term_string"}}
+</script>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader" class="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <div class="loader-logo">
+      <span class="loader-icon">🏨</span>
+      <span class="loader-text">StayIndia</span>
+    </div>
+    <div class="loader-bar"><div class="loader-progress"></div></div>
+    <p class="loader-tagline">Discovering India's finest stays…</p>
+  </div>
+</div>
+
+<!-- FLOATING BUTTONS -->
+<a href="tel:+911234567890" class="fab fab-call" aria-label="Call us" title="Call Now">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.71 19.79 19.79 0 01.18 1.11 2 2 0 012.16 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.27-.55a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+</a>
+<a href="https://wa.me/911234567890" class="fab fab-whatsapp" aria-label="WhatsApp us" target="_blank" rel="noopener" title="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar" role="banner">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo" aria-label="StayIndia Home">
+      <div class="logo-mark">S</div>
+      <div class="logo-text-wrap">
+        <span class="logo-main">StayIndia</span>
+        <span class="logo-sub">Hotel Directory</span>
+      </div>
+    </a>
+    <nav class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="hotels.html" class="nav-link">Browse Hotels</a>
+      <a href="cities.html" class="nav-link">Cities</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn-ghost" id="loginBtn" onclick="openAuth('login')">Sign In</button>
+      <button class="btn-primary ripple" onclick="openAuth('register')">Join Free</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+    <nav>
+      <a href="hotels.html" class="mobile-link">🏨 Browse Hotels</a>
+      <a href="cities.html" class="mobile-link">🗺️ Cities</a>
+      <a href="about.html" class="mobile-link">ℹ️ About</a>
+      <a href="contact.html" class="mobile-link">📞 Contact</a>
+    </nav>
+    <div class="mobile-auth">
+      <button class="btn-ghost btn-full" onclick="openAuth('login')">Sign In</button>
+      <button class="btn-primary btn-full ripple" onclick="openAuth('register')">Join Free</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero" id="hero" aria-label="Hero banner">
+  <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content animate-hero">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      India's Most Trusted Hotel Directory
+      <span class="eyebrow-dot"></span>
+    </div>
+    <h1 class="hero-title">
+      Find Your Perfect Stay
+      <span class="hero-title-accent">Anywhere in India</span>
+    </h1>
+    <p class="hero-subtitle">Search 1,200+ verified hotels across 500+ cities. Browse real photos, compare options, and contact hotels directly — completely free.</p>
+
+    <!-- SEARCH BAR -->
+    <div class="search-box" role="search">
+      <div class="search-tabs">
+        <button class="search-tab active" data-tab="city">By City</button>
+        <button class="search-tab" data-tab="name">By Name</button>
+        <button class="search-tab" data-tab="area">By Area</button>
+      </div>
+      <div class="search-main">
+        <div class="search-field search-field-location">
+          <div class="search-field-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <div class="search-field-body">
+            <label class="search-label">Search City or Hotel</label>
+            <input type="text" class="search-input" id="heroSearch" placeholder="Haridwar, Rishikesh, Delhi..." autocomplete="off" aria-label="Search city or hotel">
+          </div>
+          <div class="search-suggestions" id="searchSuggestions" role="listbox" aria-label="Search suggestions"></div>
+        </div>
+        <div class="search-divider" aria-hidden="true"></div>
+        <div class="search-field">
+          <div class="search-field-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
+          <div class="search-field-body">
+            <label class="search-label">Category</label>
+            <select class="search-select" id="heroCategory" aria-label="Hotel category">
+              <option value="">All Types</option>
+              <option value="hotel">Hotel</option>
+              <option value="resort">Resort</option>
+              <option value="guesthouse">Guest House</option>
+              <option value="dharamshala">Dharamshala</option>
+              <option value="ashram">Ashram</option>
+              <option value="homestay">Homestay</option>
+            </select>
+          </div>
+        </div>
+        <div class="search-divider" aria-hidden="true"></div>
+        <div class="search-field">
+          <div class="search-field-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="search-field-body">
+            <label class="search-label">Budget</label>
+            <select class="search-select" id="heroBudget" aria-label="Budget range">
+              <option value="">Any Budget</option>
+              <option value="budget">Under ₹1,000</option>
+              <option value="mid">₹1,000 – ₹3,000</option>
+              <option value="premium">₹3,000 – ₹8,000</option>
+              <option value="luxury">₹8,000+</option>
+            </select>
+          </div>
+        </div>
+        <button class="search-btn ripple" onclick="doHeroSearch()" aria-label="Search hotels">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Search
+        </button>
+      </div>
+      <div class="search-quick">
+        <span class="quick-label">Popular:</span>
+        <a href="hotels.html?city=haridwar" class="quick-tag">Haridwar</a>
+        <a href="hotels.html?city=rishikesh" class="quick-tag">Rishikesh</a>
+        <a href="hotels.html?city=dehradun" class="quick-tag">Dehradun</a>
+        <a href="hotels.html?city=mussoorie" class="quick-tag">Mussoorie</a>
+        <a href="hotels.html?city=delhi" class="quick-tag">Delhi</a>
+        <a href="hotels.html?type=ashram" class="quick-tag">Ashrams</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating stat cards -->
+  <div class="hero-stats" aria-label="Directory statistics">
+    <div class="hero-stat float-1">
+      <strong class="stat-num" data-count="1200">0</strong>
+      <span>+ Verified Hotels</span>
+    </div>
+    <div class="hero-stat float-2">
+      <strong class="stat-num" data-count="500">0</strong>
+      <span>+ Cities</span>
+    </div>
+    <div class="hero-stat float-3">
+      <strong class="stat-num" data-count="50000">0</strong>
+      <span>+ Happy Visitors</span>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BADGES -->
+<section class="trust-strip">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-item"><span class="trust-icon">✅</span><span>Photo Verified Hotels</span></div>
+      <div class="trust-item"><span class="trust-icon">📞</span><span>Direct Contact — Zero Commission</span></div>
+      <div class="trust-item"><span class="trust-icon">🆓</span><span>100% Free for Visitors</span></div>
+      <div class="trust-item"><span class="trust-icon">⭐</span><span>Real Guest Reviews</span></div>
+      <div class="trust-item"><span class="trust-icon">🔒</span><span>Secure & Trusted</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED CATEGORIES -->
+<section class="section categories-section" id="categories">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Browse By Type</div>
+      <h2 class="section-title">Every Kind of Stay, <em>Covered</em></h2>
+    </div>
+    <div class="category-grid">
+      <a href="hotels.html?type=luxury" class="cat-card cat-luxury reveal" style="--delay:0s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">👑</div>
+        <div class="cat-info"><h3>Luxury Hotels</h3><span>Premium 5-Star</span></div>
+      </a>
+      <a href="hotels.html?type=budget" class="cat-card cat-budget reveal" style="--delay:.05s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">💚</div>
+        <div class="cat-info"><h3>Budget Stays</h3><span>Under ₹1,000</span></div>
+      </a>
+      <a href="hotels.html?type=resort" class="cat-card cat-resort reveal" style="--delay:.1s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">🌿</div>
+        <div class="cat-info"><h3>Resorts</h3><span>Nature & Wellness</span></div>
+      </a>
+      <a href="hotels.html?type=dharamshala" class="cat-card cat-dharam reveal" style="--delay:.15s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">🕉️</div>
+        <div class="cat-info"><h3>Dharamshalas</h3><span>Pilgrim Stays</span></div>
+      </a>
+      <a href="hotels.html?type=ashram" class="cat-card cat-ashram reveal" style="--delay:.2s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">🧘</div>
+        <div class="cat-info"><h3>Ashrams</h3><span>Yoga & Spiritual</span></div>
+      </a>
+      <a href="hotels.html?type=family" class="cat-card cat-family reveal" style="--delay:.25s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">👨‍👩‍👧</div>
+        <div class="cat-info"><h3>Family Hotels</h3><span>Kid Friendly</span></div>
+      </a>
+      <a href="hotels.html?type=guesthouse" class="cat-card cat-guest reveal" style="--delay:.3s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">🏡</div>
+        <div class="cat-info"><h3>Guest Houses</h3><span>Cosy & Local</span></div>
+      </a>
+      <a href="hotels.html?type=couple" class="cat-card cat-couple reveal" style="--delay:.35s">
+        <div class="cat-bg"></div>
+        <div class="cat-icon">💑</div>
+        <div class="cat-info"><h3>Couple Friendly</h3><span>Romantic Stays</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED HOTELS -->
+<section class="section featured-section" id="featured">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Editor's Pick</div>
+      <h2 class="section-title">Featured <em>Hotels</em> This Week</h2>
+      <a href="hotels.html?filter=featured" class="section-link">View all featured →</a>
+    </div>
+    <div class="hotels-grid" id="featuredGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- POPULAR CITIES -->
+<section class="section cities-section" id="popularCities">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Top Destinations</div>
+      <h2 class="section-title">Popular <em>Cities</em> Across India</h2>
+      <a href="cities.html" class="section-link">All 500+ cities →</a>
+    </div>
+    <div class="cities-grid" id="citiesGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- TRENDING HOTELS -->
+<section class="section trending-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">🔥 Trending Now</div>
+      <h2 class="section-title">Most Viewed <em>This Week</em></h2>
+      <a href="hotels.html?sort=trending" class="section-link">See all trending →</a>
+    </div>
+    <div class="hotels-grid" id="trendingGrid"></div>
+  </div>
+</section>
+
+<!-- NEAR HAR KI PAURI -->
+<section class="section proximity-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">🕉️ Sacred Haridwar</div>
+      <h2 class="section-title">Hotels Near <em>Har Ki Pauri</em></h2>
+      <a href="hotels.html?area=har-ki-pauri" class="section-link">View all →</a>
+    </div>
+    <div class="hotels-grid" id="hkpGrid"></div>
+  </div>
+</section>
+
+<!-- NEWLY ADDED -->
+<section class="section new-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">✨ Just Listed</div>
+      <h2 class="section-title">Newly Added <em>Hotels</em></h2>
+      <a href="hotels.html?sort=newest" class="section-link">See all new →</a>
+    </div>
+    <div class="hotels-grid" id="newGrid"></div>
+  </div>
+</section>
+
+<!-- BUDGET HOTELS -->
+<section class="section budget-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">💚 Smart Traveller</div>
+      <h2 class="section-title">Best <em>Budget</em> Stays</h2>
+      <a href="hotels.html?budget=budget" class="section-link">All budget hotels →</a>
+    </div>
+    <div class="hotels-grid" id="budgetGrid"></div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="section why-section reveal">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-text">
+        <div class="section-eyebrow">Why StayIndia?</div>
+        <h2 class="section-title">India's Most Trusted<br><em>Hotel Discovery Platform</em></h2>
+        <p class="why-desc">We don't take booking commissions. We don't add hidden fees. We simply connect travellers with verified hotels — and let you deal directly.</p>
+        <div class="why-features">
+          <div class="why-feat"><div class="why-feat-icon">📷</div><div><h4>Photo Verified</h4><p>Every hotel submits real photos. We verify before listing.</p></div></div>
+          <div class="why-feat"><div class="why-feat-icon">📞</div><div><h4>Direct Contact</h4><p>Call or WhatsApp the hotel directly. Zero middleman.</p></div></div>
+          <div class="why-feat"><div class="why-feat-icon">⭐</div><div><h4>Genuine Reviews</h4><p>Real visitor reviews, not manufactured testimonials.</p></div></div>
+          <div class="why-feat"><div class="why-feat-icon">🇮🇳</div><div><h4>Built for India</h4><p>From pilgrimage towns to hill stations to metros — we cover it all.</p></div></div>
+        </div>
+        <a href="about.html" class="btn-primary ripple" style="width:fit-content">Learn More About Us</a>
+      </div>
+      <div class="why-visual reveal-right">
+        <div class="why-card-stack">
+          <div class="wcs-card wcs-1">
+            <div class="wcs-icon">🏨</div>
+            <div class="wcs-info"><strong>1,200+</strong><span>Verified Hotels</span></div>
+          </div>
+          <div class="wcs-card wcs-2">
+            <div class="wcs-icon">🗺️</div>
+            <div class="wcs-info"><strong>500+</strong><span>Indian Cities</span></div>
+          </div>
+          <div class="wcs-card wcs-3">
+            <div class="wcs-icon">💬</div>
+            <div class="wcs-info"><strong>₹0</strong><span>Booking Commission</span></div>
+          </div>
+          <div class="wcs-card wcs-4">
+            <div class="wcs-icon">⭐</div>
+            <div class="wcs-info"><strong>4.8★</strong><span>Average Rating</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOURIST GUIDE -->
+<section class="section guide-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Travel Smart</div>
+      <h2 class="section-title">Tourist <em>Guide</em> & Tips</h2>
+    </div>
+    <div class="guide-grid">
+      <div class="guide-card reveal" style="--delay:0s">
+        <div class="guide-icon">🕉️</div>
+        <h3>Haridwar Travel Guide</h3>
+        <p>Best time to visit, Ganga Aarti timings, sacred ghats, and where to stay near Har Ki Pauri.</p>
+        <a href="guide-haridwar.html" class="guide-link">Read Guide →</a>
+      </div>
+      <div class="guide-card reveal" style="--delay:.1s">
+        <div class="guide-icon">🧘</div>
+        <h3>Rishikesh Travel Guide</h3>
+        <p>Yoga festivals, river rafting, ashrams, and the best riverside stays in the Yoga Capital.</p>
+        <a href="guide-rishikesh.html" class="guide-link">Read Guide →</a>
+      </div>
+      <div class="guide-card reveal" style="--delay:.2s">
+        <div class="guide-icon">🌄</div>
+        <h3>Mussoorie Travel Guide</h3>
+        <p>Mall Road walks, Kempty Falls, Landour's colonial charm — and the best hill-view hotels.</p>
+        <a href="guide-mussoorie.html" class="guide-link">Read Guide →</a>
+      </div>
+      <div class="guide-card reveal" style="--delay:.3s">
+        <div class="guide-icon">🚨</div>
+        <h3>Emergency Numbers</h3>
+        <p>Police, ambulance, fire, tourist helpline, and hospital contacts for Uttarakhand cities.</p>
+        <a href="emergency.html" class="guide-link">View Numbers →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">What Travellers Say</div>
+      <h2 class="section-title">Real Reviews from <em>Real Visitors</em></h2>
+    </div>
+    <div class="testimonial-track" id="testimonialTrack">
+      <div class="testimonial-slide">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Found the perfect Ganga view hotel in Haridwar within 5 minutes. Called directly, got a 10% discount. This site is a game changer!"</p>
+        <div class="t-author"><strong>Priya Sharma</strong> · Delhi</div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"As a solo traveller to Rishikesh, I found exactly the kind of quiet ashram stay I was looking for. Real photos made all the difference."</p>
+        <div class="t-author"><strong>Arjun Mehta</strong> · Mumbai</div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="t-stars">★★★★☆</div>
+        <p class="t-text">"No booking fees, no surprise charges. Just direct contact with the hotel. Booked a family resort in Mussoorie — 5 of us loved it."</p>
+        <div class="t-author"><strong>Sunita Kapoor</strong> · Lucknow</div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Used StayIndia for my Char Dham yatra planning. Checked dharamshalas in all four cities. Everything matched the photos exactly."</p>
+        <div class="t-author"><strong>Ramesh Patel</strong> · Ahmedabad</div>
+      </div>
+    </div>
+    <div class="testimonial-dots" id="testimonialDots" role="tablist" aria-label="Testimonial navigation"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Got Questions?</div>
+      <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Is StayIndia free to use?</span><span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Yes, completely free for visitors. Browse hotels, view photos, read reviews, and contact hotels directly at no charge — ever.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Do you take booking commission?</span><span class="faq-arrow">↓</span></div>
+        <div class="faq-a">No. We are a directory, not a booking platform. You contact the hotel directly. There are no commissions, no middlemen, and no added fees.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How are hotels verified?</span><span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Every hotel listed has submitted real photos of their rooms, lobby, and facilities. Our team reviews and verifies before approving the listing.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Can I save favourite hotels?</span><span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Yes! Create a free account and save any hotel to your favourites. Your list is saved across devices so you can access it anytime.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How do I leave a review?</span><span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Sign in with your free account, visit any hotel detail page, and leave a star rating and written review. Reviews are moderated before publishing.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>What cities are covered?</span><span class="faq-arrow">↓</span></div>
+        <div class="faq-a">We currently cover 500+ cities across India, with a strong focus on Uttarakhand, Rajasthan, and Delhi NCR. We add new cities every week.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="section cta-banner reveal">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Own a Hotel? <em>Reach Lakhs of Travellers</em></h2>
+        <p>Get your hotel listed on StayIndia and be discovered by visitors searching for stays in your city. First month completely free.</p>
+      </div>
+      <div class="cta-actions">
+        <p class="cta-note">💡 Hotel owners receive a private invitation link — ask via our contact form.</p>
+        <a href="contact.html?subject=hotel-listing" class="btn-primary ripple btn-large">Request Listing Invitation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <div class="logo-mark">S</div>
+          <span>StayIndia</span>
+        </a>
+        <p>India's most trusted hotel directory. Connecting travellers with verified stays across 500+ cities — at zero commission.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" class="social-link">f</a>
+          <a href="#" aria-label="Instagram" class="social-link">in</a>
+          <a href="#" aria-label="Twitter" class="social-link">tw</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>For Travellers</h4>
+        <ul>
+          <li><a href="hotels.html">Browse Hotels</a></li>
+          <li><a href="cities.html">All Cities</a></li>
+          <li><a href="hotels.html?city=haridwar">Hotels in Haridwar</a></li>
+          <li><a href="hotels.html?city=rishikesh">Hotels in Rishikesh</a></li>
+          <li><a href="hotels.html?city=dehradun">Hotels in Dehradun</a></li>
+          <li><a href="hotels.html?city=mussoorie">Hotels in Mussoorie</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Browse By Type</h4>
+        <ul>
+          <li><a href="hotels.html?type=luxury">Luxury Hotels</a></li>
+          <li><a href="hotels.html?type=budget">Budget Stays</a></li>
+          <li><a href="hotels.html?type=resort">Resorts</a></li>
+          <li><a href="hotels.html?type=dharamshala">Dharamshalas</a></li>
+          <li><a href="hotels.html?type=ashram">Ashrams</a></li>
+          <li><a href="hotels.html?type=family">Family Hotels</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 StayIndia Hotel Directory · Made with ❤️ in India · <a href="sitemap.xml">Sitemap</a></p>
+      <p class="footer-seo-text">Best hotels in Haridwar · Hotels near Har Ki Pauri · Rishikesh yoga retreats · Dehradun resorts · Mussoorie hill hotels · Budget hotels India</p>
+    </div>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-label="Authentication" style="display:none">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAuth()" aria-label="Close">✕</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="loginTab" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="modal-tab" id="registerTab" onclick="switchAuthTab('register')">Join Free</button>
+    </div>
+    <div id="loginForm" class="auth-form">
+      <div class="auth-google" onclick="googleLogin()">
+        <svg viewBox="0 0 24 24" width="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </div>
+      <div class="auth-divider"><span>or sign in with email</span></div>
+      <div class="form-field"><label>Email</label><input type="email" placeholder="your@email.com" class="form-input"></div>
+      <div class="form-field"><label>Password</label><input type="password" placeholder="••••••••" class="form-input"></div>
+      <div class="form-row-between"><label class="checkbox-label"><input type="checkbox"> Remember me</label><a href="#" class="link-sm">Forgot password?</a></div>
+      <button class="btn-primary ripple btn-full">Sign In</button>
+    </div>
+    <div id="registerForm" class="auth-form" style="display:none">
+      <div class="auth-google" onclick="googleLogin()">
+        <svg viewBox="0 0 24 24" width="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </div>
+      <div class="auth-divider"><span>or register with email</span></div>
+      <div class="form-field"><label>Full Name</label><input type="text" placeholder="Your name" class="form-input"></div>
+      <div class="form-field"><label>Email</label><input type="email" placeholder="your@email.com" class="form-input"></div>
+      <div class="form-field"><label>Password</label><input type="password" placeholder="Min 8 characters" class="form-input"></div>
+      <button class="btn-primary ripple btn-full">Create Free Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOTEL QUICK VIEW MODAL -->
+<div class="modal-overlay" id="quickViewModal" role="dialog" aria-modal="true" aria-label="Hotel quick view" style="display:none">
+  <div class="modal-box modal-wide" id="quickViewContent"></div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
