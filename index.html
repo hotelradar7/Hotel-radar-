@@ -15,6 +15,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://firebaseio.com">
+<link rel="dns-prefetch" href="https://ipapi.co">
+<link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
+<script src="theme.js"></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"StayIndia","url":"https://stayindia.com","description":"India's premium hotel directory","potentialAction":{"@type":"SearchAction","target":"https://stayindia.com/hotels?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
@@ -68,7 +72,6 @@
       <span></span><span></span><span></span>
     </button>
   </div>
-  <!-- Mobile menu -->
   <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
     <nav>
       <a href="hotels.html" class="mobile-link">🏨 Browse Hotels</a>
@@ -198,6 +201,62 @@
   </div>
 </section>
 
+<!-- ============================================================
+     SMART LOCATION SECTION — dynamically driven by location engine
+     ============================================================ -->
+<section class="section" id="smartSection" style="display:none; padding-bottom:0">
+  <div class="container">
+
+    <!-- LOCATION BANNER — updated by location-ui.js -->
+    <div id="locationBanner" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- SECTION HEADER — title & sub updated by JS -->
+    <div class="section-header reveal">
+      <div class="section-eyebrow" id="smartSectionEyebrow">📍 Near You</div>
+      <h2 class="section-title">
+        <span id="smartSectionTitle">Hotels Near You</span>
+      </h2>
+      <span id="smartSectionSub" style="font-size:.875rem; color:var(--gray-400); font-weight:500; display:block; margin-top:.25rem"></span>
+      <a href="hotels.html" class="section-link" id="smartViewAll">View all →</a>
+    </div>
+
+    <!-- HOTELS GRID — filled by location-ui.js -->
+    <div class="hotels-grid" id="smartHotelsGrid"></div>
+
+  </div>
+</section>
+
+<!-- NEARBY CITIES (shown when P2: no hotels in city but has state hotels) -->
+<section class="section" id="nearbyCitiesSection" style="display:none; padding-top:2rem">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Explore Nearby</div>
+      <h2 class="section-title" id="nearbyCitiesTitle">More Hotels in Your State</h2>
+      <a href="cities.html" class="section-link">All cities →</a>
+    </div>
+    <div class="cities-grid" id="nearbyCitiesGrid"></div>
+  </div>
+</section>
+
+<!-- POPULAR IN INDIA (shown when P3/P4) -->
+<section class="section" id="popularIndiaSection" style="display:none; padding-top:2rem">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">🔥 Most Searched</div>
+      <h2 class="section-title">Trending <em>Across India</em></h2>
+      <a href="hotels.html?sort=trending" class="section-link">See all →</a>
+    </div>
+    <div class="hotels-grid" id="popularIndiaGrid"></div>
+  </div>
+</section>
+
+<!-- LOCATION SWITCHER MOUNT (portal — rendered by location-ui.js) -->
+<div id="locationSwitcherMount" aria-live="polite"></div>
+
+<!-- ============================================================
+     STANDARD SECTIONS (always visible)
+     ============================================================ -->
+
 <!-- FEATURED CATEGORIES -->
 <section class="section categories-section" id="categories">
   <div class="container">
@@ -258,9 +317,7 @@
       <h2 class="section-title">Featured <em>Hotels</em> This Week</h2>
       <a href="hotels.html?filter=featured" class="section-link">View all featured →</a>
     </div>
-    <div class="hotels-grid" id="featuredGrid">
-      <!-- Populated by JS -->
-    </div>
+    <div class="hotels-grid" id="featuredGrid"></div>
   </div>
 </section>
 
@@ -272,9 +329,7 @@
       <h2 class="section-title">Popular <em>Cities</em> Across India</h2>
       <a href="cities.html" class="section-link">All 500+ cities →</a>
     </div>
-    <div class="cities-grid" id="citiesGrid">
-      <!-- Populated by JS -->
-    </div>
+    <div class="cities-grid" id="citiesGrid"></div>
   </div>
 </section>
 
@@ -344,22 +399,10 @@
       </div>
       <div class="why-visual reveal-right">
         <div class="why-card-stack">
-          <div class="wcs-card wcs-1">
-            <div class="wcs-icon">🏨</div>
-            <div class="wcs-info"><strong>1,200+</strong><span>Verified Hotels</span></div>
-          </div>
-          <div class="wcs-card wcs-2">
-            <div class="wcs-icon">🗺️</div>
-            <div class="wcs-info"><strong>500+</strong><span>Indian Cities</span></div>
-          </div>
-          <div class="wcs-card wcs-3">
-            <div class="wcs-icon">💬</div>
-            <div class="wcs-info"><strong>₹0</strong><span>Booking Commission</span></div>
-          </div>
-          <div class="wcs-card wcs-4">
-            <div class="wcs-icon">⭐</div>
-            <div class="wcs-info"><strong>4.8★</strong><span>Average Rating</span></div>
-          </div>
+          <div class="wcs-card wcs-1"><div class="wcs-icon">🏨</div><div class="wcs-info"><strong>1,200+</strong><span>Verified Hotels</span></div></div>
+          <div class="wcs-card wcs-2"><div class="wcs-icon">🗺️</div><div class="wcs-info"><strong>500+</strong><span>Indian Cities</span></div></div>
+          <div class="wcs-card wcs-3"><div class="wcs-icon">💬</div><div class="wcs-info"><strong>₹0</strong><span>Booking Commission</span></div></div>
+          <div class="wcs-card wcs-4"><div class="wcs-icon">⭐</div><div class="wcs-info"><strong>4.8★</strong><span>Average Rating</span></div></div>
         </div>
       </div>
     </div>
@@ -581,8 +624,11 @@
   <div class="modal-box modal-wide" id="quickViewContent"></div>
 </div>
 
+<!-- SCRIPTS — order matters: firebase → data → location engine → location ui → app -->
 <script src="firebase-config.js"></script>
 <script src="data.js"></script>
+<script src="location.js"></script>
+<script src="location-ui.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
