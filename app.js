@@ -1,569 +1,681 @@
 /**
- * StayIndia — Hotel Directory
- * app.js — Core Application Engine (Location-Aware Edition)
- *
- * Boot order:
- *   1. firebase-config.js  (Firebase SDK stubs)
- *   2. data.js             (HOTELS, CITIES, helpers)
- *   3. location.js         (LocationEngine — detection & priority cascade)
- *   4. location-ui.js      (LocationUI — banner, switcher, sections)
- *   5. app.js              (this file — page init, nav, canvas, search, UI)
+ * HotelRadar — Core App
+ * app.js
  */
-
 'use strict';
 
 /* ============================================================
-   INIT
+   STATE
+   ============================================================ */
+let wishlist = new Set();
+
+/* ============================================================
+   BOOT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  initLoader();
-  initNavbar();
-  initMobileMenu();
-  initScrollReveal();
+  applySavedTheme();
+  initMenu();
+  initThemeSwitch();
+  initWishlist();
   initBackToTop();
-  initSmoothScroll();
-  initFAQs();
-  initFavourites();
+  initSheets();
+  initSearchBar();
+  injectMenuWishlistCount();
 
-  if (isPage('index.html') || isPage('')) {
-    initHeroCanvas();
-    initSearch();
-    initStatsCounter();
-    initTestimonials();
-    renderSection('featuredGrid', getFeaturedHotels(6));
-    renderSection('trendingGrid', getTrendingHotels(3));
-    renderSection('hkpGrid',      getHKPHotels(3));
-    renderSection('newGrid',      getNewHotels(3));
-    renderSection('budgetGrid',   getBudgetHotels(3));
-    renderCitiesGrid();
-    // Location system — non-blocking
-    LocationUI.initLocationSystem();
-  }
-
-  if (isPage('hotels.html'))       initHotelsPage();
-  if (isPage('hotel-detail.html')) initDetailPage();
-  if (isPage('register-hotel.html')) initRegisterPage();
+  const page = currentPage();
+  if (page === 'index.html' || page === '') initHomePage();
+  if (page === 'hotels.html') initHotelsPage();
+  if (page === 'hotel-detail.html') initDetailPage();
+  if (page === 'wishlist.html') initWishlistPage();
 });
 
-function isPage(name) {
-  const path = window.location.pathname;
-  return path.endsWith(name) || path.endsWith('/' + name) ||
-    (name === '' && (path === '/' || path.endsWith('/')));
+function currentPage() {
+  const p = window.location.pathname.split('/').pop();
+  return p || '';
 }
 
 /* ============================================================
-   LOADER
+   THEME (single toggle, in menu only)
    ============================================================ */
-function initLoader() {
-  const loader = document.getElementById('loader');
-  if (!loader) return;
-  document.body.style.overflow = 'hidden';
-  window.addEventListener('load', () => {
-    setTimeout(() => { loader.classList.add('hidden'); document.body.style.overflow = ''; }, 1900);
-  });
+function applySavedTheme() {
+  try {
+    const saved = localStorage.getItem('hr_theme');
+    if (saved === 'night') document.documentElement.setAttribute('data-theme', 'night');
+  } catch {}
 }
 
-/* ============================================================
-   NAVBAR
-   ============================================================ */
-function initNavbar() {
-  const navbar = document.getElementById('navbar');
-  if (!navbar) return;
-  let ticking = false;
-  const onScroll = () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        navbar.classList.toggle('scrolled', window.scrollY > 40);
-        ticking = false;
-      });
-      ticking = true;
-    }
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-  const path = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-link').forEach(link => {
-    if (link.getAttribute('href') === path) link.classList.add('active');
-  });
-}
+function initThemeSwitch() {
+  const sw = document.getElementById('themeSwitch');
+  if (!sw) return;
+  const isNight = document.documentElement.getAttribute('data-theme') === 'night';
+  sw.classList.toggle('on', isNight);
 
-/* ============================================================
-   MOBILE MENU
-   ============================================================ */
-function initMobileMenu() {
-  const btn  = document.getElementById('hamburger');
-  const menu = document.getElementById('mobileMenu');
-  if (!btn || !menu) return;
-  btn.addEventListener('click', () => {
-    const open = menu.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', String(open));
-  });
-  menu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      menu.classList.remove('open'); btn.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    });
-  });
-  document.addEventListener('click', e => {
-    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-      menu.classList.remove('open'); btn.classList.remove('open');
+  sw.addEventListener('click', () => {
+    const nowNight = document.documentElement.getAttribute('data-theme') === 'night';
+    if (nowNight) {
+      document.documentElement.removeAttribute('data-theme');
+      try { localStorage.setItem('hr_theme', 'day'); } catch {}
+      sw.classList.remove('on');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'night');
+      try { localStorage.setItem('hr_theme', 'night'); } catch {}
+      sw.classList.add('on');
     }
   });
 }
 
 /* ============================================================
-   HERO CANVAS — Constellation particle system
+   SLIDE MENU
    ============================================================ */
-function initHeroCanvas() {
-  const canvas = document.getElementById('heroCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d', { alpha: true });
-  let W, H, nodes;
-  let isVisible = true;
-  let rafId = null;
+function initMenu() {
+  const btn = document.getElementById('menuBtn');
+  const overlay = document.getElementById('menuOverlay');
+  const panel = document.getElementById('menuPanel');
+  const closeBtn = document.getElementById('menuClose');
+  if (!btn || !overlay || !panel) return;
 
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-    nodes = Array.from({ length: Math.min(Math.floor(W * H / 14000), 80) }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
-      r: Math.random() * 2 + 1, opacity: Math.random() * 0.5 + 0.2,
-    }));
+  const open = () => { overlay.classList.add('open'); panel.classList.add('open'); document.body.style.overflow = 'hidden'; };
+  const close = () => { overlay.classList.remove('open'); panel.classList.remove('open'); document.body.style.overflow = ''; };
+
+  btn.addEventListener('click', open);
+  closeBtn?.addEventListener('click', close);
+  overlay.addEventListener('click', close);
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+}
+
+/* Show live wishlist count badge in the menu link + topbar icon */
+function injectMenuWishlistCount() {
+  const count = wishlist.size;
+  const pill = document.getElementById('menuWishlistCount');
+  if (pill) {
+    if (count > 0) { pill.textContent = count; pill.style.display = 'inline-block'; }
+    else pill.style.display = 'none';
   }
-
-  function draw() {
-    if (!isVisible) { rafId = null; return; } // stop loop when hero is offscreen
-    ctx.clearRect(0, 0, W, H);
-    nodes.forEach(n => {
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-    });
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 140) {
-          ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(255,122,0,${(1 - dist / 140) * 0.12})`;
-          ctx.lineWidth = 1; ctx.stroke();
-        }
-      }
-    }
-    nodes.forEach(n => {
-      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(212,175,55,${n.opacity})`; ctx.fill();
-    });
-    rafId = requestAnimationFrame(draw);
-  }
-
-  function startLoop() {
-    if (!rafId) rafId = requestAnimationFrame(draw);
-  }
-
-  // Pause the particle animation when hero scrolls out of viewport —
-  // saves CPU/battery and keeps scrolling smooth on long pages
-  const visObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      isVisible = entry.isIntersecting;
-      if (isVisible) startLoop();
-    });
-  }, { threshold: 0 });
-  visObserver.observe(canvas);
-
-  // Pause entirely when the browser tab itself is hidden
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { isVisible = false; }
-    else if (canvas.getBoundingClientRect().bottom > 0) { isVisible = true; startLoop(); }
-  });
-
-  new ResizeObserver(resize).observe(canvas);
-  resize();
-  startLoop();
+  const dot = document.getElementById('topbarWishlistDot');
+  if (dot) dot.style.display = count > 0 ? 'block' : 'none';
 }
 
 /* ============================================================
-   SEARCH SYSTEM
+   WISHLIST (localStorage, persists, has its own page)
    ============================================================ */
-function initSearch() {
-  const input       = document.getElementById('heroSearch');
-  const suggestions = document.getElementById('searchSuggestions');
-  if (!input || !suggestions) return;
-  let debounceTimer;
+function initWishlist() {
+  try { wishlist = new Set(JSON.parse(localStorage.getItem('hr_wishlist') || '[]')); }
+  catch { wishlist = new Set(); }
+  paintWishlistButtons();
+  injectMenuWishlistCount();
+}
 
-  input.addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      const q = input.value.trim();
-      if (q.length < 2) { suggestions.classList.remove('show'); return; }
-      const results = getSuggestions(q);
-      if (!results.length) { suggestions.classList.remove('show'); return; }
-      suggestions.innerHTML = results.map(s => `
-        <div class="suggestion-item" onclick="goSuggestion('${s.link}')">
-          <span class="suggestion-icon">${s.icon}</span>
-          <div class="suggestion-text">
-            <strong>${highlight(s.label, q)}</strong>
-            <small>${s.sub}</small>
-          </div>
-        </div>`).join('');
-      suggestions.classList.add('show');
-    }, 150);
-  });
+function saveWishlist() {
+  try { localStorage.setItem('hr_wishlist', JSON.stringify([...wishlist])); } catch {}
+}
 
-  document.addEventListener('click', e => {
-    if (!input.closest('.search-field')?.contains(e.target)) suggestions.classList.remove('show');
-  });
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') doHeroSearch();
-    if (e.key === 'Escape') suggestions.classList.remove('show');
-  });
-
-  document.querySelectorAll('.search-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const ph = { city:'Haridwar, Rishikesh, Delhi...', name:'Hotel name, resort, ashram...', area:'Har Ki Pauri, Laxman Jhula...' };
-      input.placeholder = ph[tab.dataset.tab] || input.placeholder;
-    });
+function paintWishlistButtons() {
+  document.querySelectorAll('[data-fav-id]').forEach(btn => {
+    const id = btn.dataset.favId;
+    const on = wishlist.has(id);
+    btn.classList.toggle('active', on);
+    const svg = btn.querySelector('svg');
+    if (svg) svg.setAttribute('fill', on ? 'currentColor' : 'none');
   });
 }
 
-function highlight(text, query) {
-  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
-  return text.replace(re, '<mark style="background:rgba(255,122,0,.25);color:var(--saffron);border-radius:2px">$1</mark>');
-}
-function goSuggestion(link) { window.location.href = link; }
-function doHeroSearch() {
-  const p = new URLSearchParams();
-  const q = document.getElementById('heroSearch')?.value.trim();
-  const cat = document.getElementById('heroCategory')?.value;
-  const bud = document.getElementById('heroBudget')?.value;
-  if (q) p.set('q', q); if (cat) p.set('type', cat); if (bud) p.set('budget', bud);
-  window.location.href = `hotels.html?${p.toString()}`;
-}
-
-/* ============================================================
-   SECTION RENDERERS
-   ============================================================ */
-function renderSection(gridId, hotels) {
-  const grid = document.getElementById(gridId);
-  if (!grid) return;
-  grid.innerHTML = renderSkeletons(Math.min(hotels.length || 3, 6));
-  setTimeout(() => {
-    grid.innerHTML = hotels.length
-      ? hotels.map(renderHotelCard).join('')
-      : '<p style="color:var(--gray-400);text-align:center;padding:3rem;grid-column:1/-1">No hotels found.</p>';
-    initScrollReveal(); restoreFavourites();
-  }, 400);
-}
-
-function renderCitiesGrid() {
-  const grid = document.getElementById('citiesGrid');
-  if (!grid) return;
-  grid.innerHTML = CITIES.slice(0, 8).map(renderCityCard).join('');
-  initScrollReveal();
-}
-
-/* ============================================================
-   HOTEL NAVIGATION
-   ============================================================ */
-function openDetail(hotelId) { window.location.href = `hotel-detail.html?id=${hotelId}`; }
-
-/* ============================================================
-   FAVOURITES
-   ============================================================ */
-let favourites = new Set();
-function initFavourites() {
-  try { favourites = new Set(JSON.parse(localStorage.getItem('si_favourites') || '[]')); } catch { favourites = new Set(); }
-  restoreFavourites();
-}
-function restoreFavourites() {
-  favourites.forEach(id => {
-    const btn = document.getElementById(`fav-${id}`);
-    if (btn) { btn.textContent = '♥'; btn.classList.add('active'); }
-  });
-}
-function toggleFav(e, hotelId) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  if (favourites.has(hotelId)) {
-    favourites.delete(hotelId); btn.textContent = '♡'; btn.classList.remove('active');
-    showToast('Removed from favourites', '');
+function toggleWishlist(id, btnEl) {
+  if (wishlist.has(id)) {
+    wishlist.delete(id);
+    showToast('Removed from wishlist');
   } else {
-    favourites.add(hotelId); btn.textContent = '♥'; btn.classList.add('active');
-    showToast('❤️ Saved to favourites!', 'success');
+    wishlist.add(id);
+    showToast('Saved to wishlist');
   }
-  try { localStorage.setItem('si_favourites', JSON.stringify([...favourites])); } catch {}
+  saveWishlist();
+  paintWishlistButtons();
+  injectMenuWishlistCount();
+  if (currentPage() === 'wishlist.html') renderWishlistPage();
 }
 
 /* ============================================================
-   SCROLL REVEAL
+   TOAST
    ============================================================ */
-function initScrollReveal() {
-  const els = document.querySelectorAll('.reveal:not(.visible), .reveal-right:not(.visible)');
-  if (!els.length) return;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(el => observer.observe(el));
-}
-
-/* ============================================================
-   STATS COUNTER
-   ============================================================ */
-function initStatsCounter() {
-  const stats = document.querySelectorAll('.stat-num[data-count]');
-  if (!stats.length) return;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { animateCount(e.target); observer.unobserve(e.target); } });
-  }, { threshold: 0.5 });
-  stats.forEach(el => observer.observe(el));
-}
-function animateCount(el) {
-  const target = parseInt(el.dataset.count, 10);
-  const duration = 2000; const start = performance.now();
-  function step(now) {
-    const p = Math.min((now - start) / duration, 1);
-    el.textContent = Math.floor((1 - Math.pow(1-p,3)) * target).toLocaleString('en-IN') + (p===1 ? '+' : '');
-    if (p < 1) requestAnimationFrame(step);
+function showToast(msg) {
+  let wrap = document.getElementById('toastWrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'toastWrap';
+    wrap.className = 'toast-wrap';
+    document.body.appendChild(wrap);
   }
-  requestAnimationFrame(step);
-}
-
-/* ============================================================
-   TESTIMONIALS CAROUSEL
-   ============================================================ */
-function initTestimonials() {
-  const track = document.getElementById('testimonialTrack');
-  const dots  = document.getElementById('testimonialDots');
-  if (!track || !dots) return;
-  const slides = track.querySelectorAll('.testimonial-slide');
-  let current = 0; let timer;
-  function goTo(idx) {
-    current = (idx + slides.length) % slides.length;
-    dots.querySelectorAll('.t-dot').forEach((d, i) => d.classList.toggle('active', i === current));
-  }
-  slides.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 't-dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('role','tab'); dot.setAttribute('aria-label', `Testimonial ${i+1}`);
-    dot.addEventListener('click', () => { goTo(i); clearInterval(timer); timer = setInterval(() => goTo(current+1), 4500); });
-    dots.appendChild(dot);
-  });
-  timer = setInterval(() => goTo(current + 1), 4500);
-  let startX = 0;
-  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
-  track.addEventListener('touchend',   e => {
-    const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) { goTo(current + (diff > 0 ? 1 : -1)); clearInterval(timer); timer = setInterval(() => goTo(current+1), 4500); }
-  });
-}
-
-/* ============================================================
-   FAQ ACCORDION
-   ============================================================ */
-function initFAQs() {
-  document.querySelectorAll('.faq-item').forEach(item => {
-    item.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleFaq(item); } });
-    item.setAttribute('tabindex','0'); item.setAttribute('role','button');
-  });
-}
-function toggleFaq(el) {
-  const isOpen = el.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-  if (!isOpen) el.classList.add('open');
-}
-
-/* ============================================================
-   SMOOTH SCROLL
-   ============================================================ */
-function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const href = a.getAttribute('href'); if (href === '#') return;
-      const target = document.querySelector(href); if (!target) return;
-      e.preventDefault();
-      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 92, behavior: 'smooth' });
-    });
-  });
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 1800);
 }
 
 /* ============================================================
    BACK TO TOP
    ============================================================ */
 function initBackToTop() {
-  const btn = document.getElementById('backToTop');
+  const btn = document.getElementById('totop');
   if (!btn) return;
   let ticking = false;
   window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        btn.classList.toggle('show', window.scrollY > 500);
-        ticking = false;
-      });
-      ticking = true;
-    }
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      btn.classList.toggle('show', window.scrollY > 480);
+      ticking = false;
+    });
   }, { passive: true });
   btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
 /* ============================================================
-   AUTH MODAL
+   BOTTOM SHEETS (generic open/close, used for filters + location)
    ============================================================ */
-function openAuth(tab = 'login') {
-  const modal = document.getElementById('authModal');
-  if (!modal) return;
-  modal.style.display = 'flex'; document.body.style.overflow = 'hidden';
-  switchAuthTab(tab);
-}
-function closeAuth() {
-  const modal = document.getElementById('authModal');
-  if (!modal) return;
-  modal.style.display = 'none'; document.body.style.overflow = '';
-}
-function switchAuthTab(tab) {
-  const lf = document.getElementById('loginForm');    const rf = document.getElementById('registerForm');
-  const lt = document.getElementById('loginTab');     const rt = document.getElementById('registerTab');
-  if (lf) lf.style.display = tab==='login' ? 'flex' : 'none';
-  if (rf) rf.style.display = tab==='register' ? 'flex' : 'none';
-  lt?.classList.toggle('active', tab==='login');
-  rt?.classList.toggle('active', tab==='register');
-}
-function googleLogin() { showToast('🔧 Firebase Auth not configured yet. Add your Firebase config.', ''); }
-document.addEventListener('click', e => { if (e.target.classList.contains('modal-overlay')) { closeAuth(); closeQuickView(); } });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuth(); closeQuickView(); } });
-function closeQuickView() {
-  const m = document.getElementById('quickViewModal');
-  if (m) m.style.display = 'none'; document.body.style.overflow = '';
-}
-
-/* ============================================================
-   TOAST
-   ============================================================ */
-let toastContainer;
-function showToast(message, type = '') {
-  if (!toastContainer) {
-    toastContainer = document.createElement('div');
-    toastContainer.className = 'toast-container';
-    document.body.appendChild(toastContainer);
-  }
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`; toast.textContent = message;
-  toastContainer.appendChild(toast);
-  setTimeout(() => { toast.style.animation='toastIn 0.3s ease reverse'; setTimeout(() => toast.remove(), 300); }, 2800);
-}
-
-/* ============================================================
-   RIPPLE
-   ============================================================ */
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.ripple'); if (!btn) return;
-  const rect = btn.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  const circle = document.createElement('span');
-  Object.assign(circle.style, {
-    position:'absolute', width:size+'px', height:size+'px',
-    left:e.clientX-rect.left-size/2+'px', top:e.clientY-rect.top-size/2+'px',
-    background:'rgba(255,255,255,0.2)', borderRadius:'50%',
-    transform:'scale(0)', animation:'rippleAnim 0.6s ease', pointerEvents:'none',
+function initSheets() {
+  document.querySelectorAll('[data-sheet-open]').forEach(trigger => {
+    trigger.addEventListener('click', () => openSheet(trigger.dataset.sheetOpen));
   });
-  if (!document.getElementById('rippleStyle')) {
-    const s = document.createElement('style'); s.id='rippleStyle';
-    s.textContent='@keyframes rippleAnim{to{transform:scale(4);opacity:0}}';
-    document.head.appendChild(s);
-  }
-  btn.appendChild(circle);
-  circle.addEventListener('animationend', () => circle.remove());
-});
+  document.querySelectorAll('[data-sheet-close]').forEach(trigger => {
+    trigger.addEventListener('click', () => closeSheet(trigger.dataset.sheetClose));
+  });
+}
 
-/* ============================================================
-   SHARE
-   ============================================================ */
-function shareHotel(hotel) {
-  const url = `${window.location.origin}/hotel-detail.html?id=${hotel.id}`;
-  if (navigator.share) navigator.share({ title:hotel.name, text:`Check out ${hotel.name} — ₹${hotel.price}/night!`, url }).catch(()=>{});
-  else navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied!','success'));
+function openSheet(id) {
+  const overlay = document.getElementById(id + 'Overlay');
+  const sheet = document.getElementById(id);
+  if (!sheet) return;
+  overlay?.classList.add('open');
+  sheet.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSheet(id) {
+  const overlay = document.getElementById(id + 'Overlay');
+  const sheet = document.getElementById(id);
+  if (!sheet) return;
+  overlay?.classList.remove('open');
+  sheet.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 /* ============================================================
-   HOTELS PAGE
+   SEARCH BAR — works correctly: name OR city OR state
    ============================================================ */
+function initSearchBar() {
+  const input = document.getElementById('heroSearchInput');
+  const suggestBox = document.getElementById('heroSuggest');
+  const clearBtn = document.getElementById('heroSearchClear');
+  const goBtn = document.getElementById('heroSearchGo');
+  if (!input) return;
+
+  let debounce;
+
+  input.addEventListener('input', () => {
+    clearBtn?.classList.toggle('show', input.value.length > 0);
+    clearTimeout(debounce);
+    debounce = setTimeout(() => renderSuggestions(input.value), 120);
+  });
+
+  input.addEventListener('focus', () => {
+    if (input.value.length > 0) renderSuggestions(input.value);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); runSearch(input.value); }
+    if (e.key === 'Escape') hideSuggestions();
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.classList.remove('show');
+    hideSuggestions();
+    input.focus();
+  });
+
+  goBtn?.addEventListener('click', () => runSearch(input.value));
+
+  document.addEventListener('click', e => {
+    if (suggestBox && !suggestBox.contains(e.target) && e.target !== input) hideSuggestions();
+  });
+
+  function renderSuggestions(query) {
+    if (!suggestBox) return;
+    const q = query.trim();
+    if (q.length < 1) { hideSuggestions(); return; }
+    const results = getSuggestions(q);
+    if (!results.length) { hideSuggestions(); return; }
+
+    suggestBox.innerHTML = results.map(r => `
+      <div class="suggest-row" role="button" tabindex="0" onclick="window.location.href='${r.link}'">
+        <div class="suggest-icon">${r.icon}</div>
+        <div class="suggest-text">
+          <div class="suggest-title">${highlightMatch(r.label, q)}</div>
+          <div class="suggest-sub">${r.sub}</div>
+        </div>
+        <div class="suggest-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 6 6 6-6 6"/></svg></div>
+      </div>
+    `).join('');
+    suggestBox.classList.add('show');
+  }
+
+  function hideSuggestions() { suggestBox?.classList.remove('show'); }
+
+  function runSearch(query) {
+    const q = query.trim();
+    if (!q) return;
+    window.location.href = `hotels.html?q=${encodeURIComponent(q)}`;
+  }
+}
+
+function highlightMatch(text, q) {
+  if (!q) return text;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'ig');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+/* ============================================================
+   QUICK CITY CHIPS (hero)
+   ============================================================ */
+function renderQuickChips(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = CITIES.slice(0, 6).map(c =>
+    `<a href="hotels.html?city=${c.id}" class="chip">${c.name}</a>`
+  ).join('');
+}
+
+/* ============================================================
+   HOTEL CARD RENDERER (no WhatsApp/Call — clean card → detail page)
+   ============================================================ */
+function renderHotelCard(h) {
+  const isFav = wishlist.has(h.id);
+  const tagsHtml = h.badges.slice(0, 2).map(b => {
+    const tag = getBadgeTag(b);
+    return tag ? `<span class="tag ${tag.cls}">${tag.label}</span>` : '';
+  }).join('');
+
+  const amenitiesHtml = h.amenities.slice(0, 3).map(a =>
+    `<span class="amenity-pill">${AMENITY_ICONS[a] || ''} ${a}</span>`
+  ).join('');
+
+  return `
+  <a href="hotel-detail.html?id=${h.id}" class="hcard reveal in">
+    <div class="hcard-media" style="background:${h.gradient}">
+      ${h.emoji}
+      <div class="hcard-tags">${tagsHtml}</div>
+      <button class="hcard-fav ${isFav?'active':''}" data-fav-id="${h.id}"
+        onclick="event.preventDefault();event.stopPropagation();toggleWishlist('${h.id}', this)"
+        aria-label="${isFav?'Remove from':'Save to'} wishlist">
+        <svg viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <div class="hcard-rating">★ ${h.rating}</div>
+    </div>
+    <div class="hcard-body">
+      <div class="hcard-loc">📍 ${h.area}, ${h.city}</div>
+      <div class="hcard-name">${h.name}</div>
+      <div class="hcard-amenities">${amenitiesHtml}</div>
+      <div class="hcard-foot">
+        <div>
+          <div class="hcard-price-label">From</div>
+          <div class="hcard-price">${formatPrice(h.price)}<span>/night</span></div>
+        </div>
+        <div class="hcard-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 6 6 6-6 6"/></svg></div>
+      </div>
+    </div>
+  </a>`;
+}
+
+function renderSkeletonCards(n = 6) {
+  return Array(n).fill(0).map(() => `
+    <div class="skel-card">
+      <div class="skel-media skel"></div>
+      <div class="skel-body">
+        <div class="skel-line skel" style="width:40%"></div>
+        <div class="skel-line skel" style="width:80%;height:15px"></div>
+        <div class="skel-line skel" style="width:60%"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderCityCard(c) {
+  return `
+  <a href="hotels.html?city=${c.id}" class="ccard reveal in">
+    <div class="ccard-emoji">${c.emoji}</div>
+    <div class="ccard-name">${c.name}</div>
+    <div class="ccard-state">${c.state}</div>
+    <span class="ccard-count">${c.count} hotels</span>
+  </a>`;
+}
+
+function renderCategoryItem(cat) {
+  return `
+  <a href="hotels.html?type=${cat.id}" class="cat-item">
+    <div class="cat-icon-wrap">${cat.emoji}</div>
+    <div class="cat-label">${cat.label}</div>
+  </a>`;
+}
+
+function renderEmptyState(title, text) {
+  return `
+  <div class="empty-state">
+    <div class="empty-emoji">🔍</div>
+    <div class="empty-title">${title}</div>
+    <div class="empty-text">${text}</div>
+    <a href="hotels.html" class="btn-block primary" style="display:inline-flex;width:auto;padding:10px 20px">Browse all hotels</a>
+  </div>`;
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+function initReveal() {
+  const els = document.querySelectorAll('.reveal:not(.in)');
+  if (!els.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+/* ============================================================
+   HOME PAGE
+   ============================================================ */
+function initHomePage() {
+  renderQuickChips('heroChips');
+
+  const catRow = document.getElementById('catScroll');
+  if (catRow) catRow.innerHTML = CATEGORIES.map(renderCategoryItem).join('');
+
+  loadSection('featuredGrid', getFeaturedHotels(6));
+  loadSection('trendingGrid', getTrendingHotels(3));
+
+  const cityGrid = document.getElementById('citiesGrid');
+  if (cityGrid) cityGrid.innerHTML = CITIES.slice(0, 4).map(renderCityCard).join('');
+
+  // Smart location-aware section (if location.js present)
+  if (window.LocationEngine) {
+    initSmartLocationSection();
+  }
+
+  initReveal();
+}
+
+function loadSection(gridId, hotels) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+  grid.innerHTML = renderSkeletonCards(Math.min(hotels.length, 3));
+  setTimeout(() => {
+    grid.innerHTML = hotels.length ? hotels.map(renderHotelCard).join('') : renderEmptyState('No hotels yet', 'Check back soon — we add new listings every week.');
+    paintWishlistButtons();
+    initReveal();
+  }, 250);
+}
+
+/* ============================================================
+   SMART LOCATION SECTION (optional — only if location.js loaded)
+   ============================================================ */
+async function initSmartLocationSection() {
+  const banner = document.getElementById('locBanner');
+  const grid = document.getElementById('smartGrid');
+  if (!banner || !grid) return;
+
+  banner.innerHTML = `
+    <div class="loc-banner detecting">
+      <span class="loc-banner-icon">📡</span>
+      <div class="loc-banner-text"><div class="loc-banner-title">Finding hotels near you…</div></div>
+    </div>`;
+  grid.innerHTML = renderSkeletonCards(3);
+
+  try {
+    const loc = await LocationEngine.detectUserLocation();
+    const res = LocationEngine.resolveHotelsByLocation(loc, { limit: 6 });
+
+    banner.innerHTML = `
+      <div class="loc-banner">
+        <span class="loc-banner-icon">${res.emoji}</span>
+        <div class="loc-banner-text">
+          <div class="loc-banner-title">${res.label}</div>
+          <div class="loc-banner-sub">${res.sublabel}</div>
+        </div>
+        <button class="loc-banner-btn" data-sheet-open="locSheet">Change</button>
+      </div>`;
+    grid.innerHTML = res.hotels.length ? res.hotels.map(renderHotelCard).join('') : renderEmptyState('No hotels nearby yet', 'Try browsing all cities instead.');
+    paintWishlistButtons();
+    initReveal();
+    initSheets(); // re-bind new [data-sheet-open]
+  } catch {
+    banner.innerHTML = '';
+    grid.innerHTML = getFeaturedHotels(6).map(renderHotelCard).join('');
+    paintWishlistButtons();
+  }
+}
+
+/* ============================================================
+   HOTELS LIST PAGE
+   ============================================================ */
+let activeHotelFilters = {};
+
 function initHotelsPage() {
   const params = new URLSearchParams(window.location.search);
-  const city = params.get('city')||'', type = params.get('type')||'', budget = params.get('budget')||'';
-  const query = params.get('q')||'', sort = params.get('sort')||'featured', area = params.get('area')||'';
+  activeHotelFilters = {
+    city: params.get('city') || '',
+    type: params.get('type') || '',
+    budget: params.get('budget') || '',
+    q: params.get('q') || '',
+    state: params.get('state') || '',
+    sort: params.get('sort') || 'featured',
+  };
 
-  let hotels = query ? searchHotels(query) : getHotels({ city:city||undefined, type:type||undefined, budget:budget||undefined, area, sort });
+  updatePageHeading();
+  runHotelFilter();
 
-  let title = 'Browse Hotels';
-  if (city)  title = `Hotels in ${city.charAt(0).toUpperCase()+city.slice(1)}`;
-  if (type)  title = `${type.charAt(0).toUpperCase()+type.slice(1)} Hotels`;
-  if (query) title = `Results for "${query}"`;
-
-  const h1 = document.getElementById('pageTitle'); if (h1) h1.textContent = title;
-  document.title = `${title} | StayIndia`;
-
-  const grid = document.getElementById('hotelsMainGrid');
-  if (grid) {
-    grid.innerHTML = renderSkeletons(6);
-    setTimeout(() => {
-      grid.innerHTML = hotels.length
-        ? hotels.slice(0,6).map(renderHotelCard).join('')
-        : '<p style="color:var(--gray-400);text-align:center;padding:4rem;grid-column:1/-1">No hotels found. Try different filters.</p>';
-      initScrollReveal(); restoreFavourites();
-      const c = document.getElementById('hotelsCount'); if (c) c.innerHTML = `<strong>${hotels.length}</strong> hotels found`;
-    }, 500);
-  }
+  document.querySelectorAll('.filter-pill[data-filter]').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const key = pill.dataset.filter;
+      const val = pill.dataset.value;
+      activeHotelFilters[key] = activeHotelFilters[key] === val ? '' : val;
+      document.querySelectorAll(`.filter-pill[data-filter="${key}"]`).forEach(p => p.classList.remove('active'));
+      if (activeHotelFilters[key]) pill.classList.add('active');
+      updatePageHeading();
+      runHotelFilter();
+    });
+  });
 
   const sortSelect = document.getElementById('sortSelect');
   if (sortSelect) {
-    sortSelect.value = sort;
-    sortSelect.addEventListener('change', () => { params.set('sort', sortSelect.value); window.location.search = params.toString(); });
+    sortSelect.value = activeHotelFilters.sort;
+    sortSelect.addEventListener('change', () => {
+      activeHotelFilters.sort = sortSelect.value;
+      runHotelFilter();
+    });
   }
 }
 
+function updatePageHeading() {
+  const h1 = document.getElementById('pageHeading');
+  if (!h1) return;
+  let title = 'All Hotels';
+  if (activeHotelFilters.city) {
+    const c = CITIES.find(c => c.id === activeHotelFilters.city);
+    title = `Hotels in ${c ? c.name : activeHotelFilters.city}`;
+  } else if (activeHotelFilters.state) {
+    title = `Hotels in ${activeHotelFilters.state}`;
+  } else if (activeHotelFilters.type) {
+    title = `${activeHotelFilters.type.charAt(0).toUpperCase()+activeHotelFilters.type.slice(1)} Hotels`;
+  } else if (activeHotelFilters.q) {
+    title = `Results for "${activeHotelFilters.q}"`;
+  }
+  h1.textContent = title;
+  document.title = `${title} — HotelRadar`;
+}
+
+function runHotelFilter() {
+  const grid = document.getElementById('hotelsGrid');
+  const count = document.getElementById('resultCount');
+  if (!grid) return;
+
+  grid.innerHTML = renderSkeletonCards(6);
+
+  setTimeout(() => {
+    let results;
+    if (activeHotelFilters.q) {
+      results = searchHotels(activeHotelFilters.q);
+    } else if (activeHotelFilters.state) {
+      results = HOTELS.filter(h => h.approved && h.active && h.state === activeHotelFilters.state);
+    } else {
+      results = getHotels({
+        city: activeHotelFilters.city ? (CITIES.find(c=>c.id===activeHotelFilters.city)?.name || activeHotelFilters.city) : undefined,
+        type: activeHotelFilters.type || undefined,
+        budget: activeHotelFilters.budget || undefined,
+        sort: activeHotelFilters.sort,
+      });
+    }
+
+    if (count) count.textContent = `${results.length} hotel${results.length!==1?'s':''} found`;
+    grid.innerHTML = results.length
+      ? results.map(renderHotelCard).join('')
+      : renderEmptyState('No hotels found', 'Try a different city, category, or search term.');
+    paintWishlistButtons();
+    initReveal();
+  }, 280);
+}
+
 /* ============================================================
-   DETAIL PAGE
+   HOTEL DETAIL PAGE
    ============================================================ */
 function initDetailPage() {
   const params = new URLSearchParams(window.location.search);
-  const hotelId = params.get('id');
-  if (!hotelId) { window.location.href = 'hotels.html'; return; }
-  window._detailHotel = getHotelById(hotelId);
-  if (!window._detailHotel) window.location.href = 'hotels.html';
+  const id = params.get('id');
+  const hotel = id ? getHotelById(id) : null;
+
+  if (!hotel) {
+    const root = document.getElementById('detailRoot');
+    if (root) root.innerHTML = renderEmptyState('Hotel not found', 'This listing may have been removed. Browse our other hotels instead.');
+    return;
+  }
+
+  document.title = `${hotel.name} — ${hotel.city} | HotelRadar`;
+
+  const media = document.getElementById('detailMedia');
+  if (media) media.style.background = hotel.gradient;
+  const mediaEmoji = document.getElementById('detailMediaEmoji');
+  if (mediaEmoji) mediaEmoji.textContent = hotel.emoji;
+
+  const favBtn = document.getElementById('detailFavBtn');
+  if (favBtn) {
+    favBtn.dataset.favId = hotel.id;
+    favBtn.onclick = () => toggleWishlist(hotel.id, favBtn);
+  }
+
+  const crumb = document.getElementById('detailCrumb');
+  if (crumb) crumb.innerHTML = `<a href="index.html">Home</a> › <a href="hotels.html?city=${hotel.city.toLowerCase().replace(/\s+/g,'-')}">${hotel.city}</a> › <span class="current">${hotel.name}</span>`;
+
+  const tags = document.getElementById('detailTags');
+  if (tags) tags.innerHTML = hotel.badges.map(b => {
+    const t = getBadgeTag(b);
+    return t ? `<span class="tag ${t.cls}">${t.label}</span>` : '';
+  }).join('');
+
+  setText('detailName', hotel.name);
+  const starsEl = document.getElementById('detailStars');
+  if (starsEl) starsEl.innerHTML = '★'.repeat(Math.round(hotel.rating)) + '☆'.repeat(5-Math.round(hotel.rating));
+  setText('detailScore', hotel.rating);
+  setText('detailReviews', `(${hotel.reviewCount} reviews)`);
+  setText('detailLoc', `${hotel.area}, ${hotel.city}, ${hotel.state} — ${hotel.pin}`);
+  setText('detailDesc', hotel.desc);
+
+  setText('qfCheckin', hotel.checkIn);
+  setText('qfCheckout', hotel.checkOut);
+  setText('qfType', hotel.type.charAt(0).toUpperCase()+hotel.type.slice(1));
+
+  const amEl = document.getElementById('detailAmenities');
+  if (amEl) amEl.innerHTML = hotel.amenities.map(a =>
+    `<div class="amenity-row"><span class="a-ic">${AMENITY_ICONS[a]||'✓'}</span>${a}</div>`).join('');
+
+  const revEl = document.getElementById('detailReviewsList');
+  const revs = REVIEWS[hotel.id] || [];
+  if (revEl) revEl.innerHTML = revs.length ? revs.map(r => `
+    <div class="review-card">
+      <div class="review-top">
+        <div class="review-avatar">${r.name.charAt(0)}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-date">${r.date}</div>
+        </div>
+        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+    </div>`).join('') : '<p style="color:var(--ink-faint);font-size:13.5px;padding:8px 0">No reviews yet for this hotel.</p>';
+
+  setText('ctaPrice', formatPrice(hotel.price));
+
+  const ctaBtn = document.getElementById('ctaBtn');
+  if (ctaBtn) {
+    ctaBtn.onclick = () => {
+      document.querySelector('[data-tab="location"]')?.click();
+      document.getElementById('dtab-location')?.scrollIntoView({ behavior:'smooth', block:'start' });
+    };
+  }
+
+  const simEl = document.getElementById('similarGrid');
+  if (simEl) {
+    const sim = getSimilarHotels(hotel, 3);
+    simEl.innerHTML = sim.length ? sim.map(renderHotelCard).join('') : '';
+    const simSection = document.getElementById('similarSection');
+    if (simSection) simSection.style.display = sim.length ? '' : 'none';
+  }
+
+  initDetailTabs();
+  paintWishlistButtons();
+  initReveal();
+}
+
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+function initDetailTabs() {
+  const tabs = document.querySelectorAll('.dtab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.dpanel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const panel = document.getElementById('dpanel-' + tab.dataset.tab);
+      if (panel) panel.classList.add('active');
+    });
+  });
 }
 
 /* ============================================================
-   REGISTER PAGE
+   WISHLIST PAGE
    ============================================================ */
-function initRegisterPage() {
-  document.querySelectorAll('.plan-radio input[type="radio"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      document.querySelectorAll('.plan-radio').forEach(r => r.classList.remove('selected'));
-      if (radio.checked) radio.closest('.plan-radio').classList.add('selected');
-    });
-  });
-  const uploadZone = document.getElementById('photoUploadZone');
-  const photoInput = document.getElementById('photoInput');
-  if (uploadZone && photoInput) {
-    uploadZone.addEventListener('click', () => photoInput.click());
-    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor='var(--saffron)'; });
-    uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor=''; });
-    uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.style.borderColor=''; handleFiles(e.dataTransfer.files); });
-    photoInput.addEventListener('change', () => handleFiles(photoInput.files));
-  }
-  document.getElementById('hotelRegistrationForm')?.addEventListener('submit', e => {
-    e.preventDefault();
-    showToast("✅ Application submitted! We'll review your photos within 48 hours.", 'success');
-    e.target.reset();
-  });
+function initWishlistPage() {
+  renderWishlistPage();
 }
-function handleFiles(files) {
-  const count = files.length;
-  const el = document.querySelector('.upload-text');
-  if (el && count) el.innerHTML = `<strong style="color:var(--green)">✓ ${count} photo${count>1?'s':''} selected</strong><br><small>${Array.from(files).map(f=>f.name).join(', ').slice(0,80)}…</small>`;
+
+function renderWishlistPage() {
+  const grid = document.getElementById('wishlistGrid');
+  const emptyWrap = document.getElementById('wishlistEmpty');
+  if (!grid) return;
+
+  const items = HOTELS.filter(h => wishlist.has(h.id));
+
+  if (!items.length) {
+    grid.style.display = 'none';
+    if (emptyWrap) emptyWrap.style.display = 'block';
+    return;
+  }
+
+  grid.style.display = '';
+  if (emptyWrap) emptyWrap.style.display = 'none';
+  grid.innerHTML = items.map(renderHotelCard).join('');
+  paintWishlistButtons();
+  initReveal();
+
+  const count = document.getElementById('wishlistCount');
+  if (count) count.textContent = `${items.length} saved hotel${items.length!==1?'s':''}`;
 }

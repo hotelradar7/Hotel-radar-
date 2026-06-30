@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FBF9F6">
-<title>Browse Hotels — HotelRadar</title>
-<meta name="description" content="Browse verified hotels across India. Filter by city, type, and budget.">
+<title>My Wishlist — HotelRadar</title>
+<meta name="description" content="View your saved hotels on HotelRadar.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,8 +21,7 @@
     </a>
     <div class="topbar-actions">
       <a href="wishlist.html" class="icon-btn" aria-label="My wishlist">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        <span class="badge-dot" id="topbarWishlistDot" style="display:none"></span>
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </a>
       <button class="icon-btn" id="menuBtn" aria-label="Open menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
@@ -74,59 +73,23 @@
   <div class="menu-foot">HotelRadar · Made in India</div>
 </nav>
 
-<!-- PAGE HEAD -->
 <div class="container" style="padding-top:16px">
-  <h1 class="section-title" id="pageHeading" style="font-size:22px">All Hotels</h1>
-  <div class="section-sub" id="resultCount" style="margin-top:2px">Loading…</div>
+  <h1 class="section-title" style="font-size:22px">My wishlist</h1>
+  <div class="section-sub" id="wishlistCount" style="margin-top:2px">0 saved hotels</div>
 </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
+<section class="section">
   <div class="container">
-    <div class="filter-scroll">
-      <button class="filter-pill" data-sheet-open="filterSheet">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-        Filters
-      </button>
-      <button class="filter-pill" data-filter="budget" data-value="budget">Under ₹1,000</button>
-      <button class="filter-pill" data-filter="budget" data-value="mid">₹1,000–3,000</button>
-      <button class="filter-pill" data-filter="budget" data-value="luxury">Luxury</button>
-      <button class="filter-pill" data-filter="type" data-value="ashram">Ashram</button>
-      <button class="filter-pill" data-filter="type" data-value="resort">Resort</button>
-      <button class="filter-pill" data-filter="type" data-value="family">Family</button>
+    <div class="hgrid" id="wishlistGrid"></div>
+
+    <div class="wishlist-empty" id="wishlistEmpty" style="display:none">
+      <div class="empty-emoji">🤍</div>
+      <div class="empty-title">No saved hotels yet</div>
+      <div class="empty-text">Tap the heart icon on any hotel to save it here for later.</div>
+      <a href="hotels.html" class="btn-block primary" style="display:inline-flex;width:auto;padding:11px 22px">Browse hotels</a>
     </div>
   </div>
-</div>
-
-<!-- RESULTS -->
-<section class="section" style="padding-top:18px">
-  <div class="container">
-    <div class="hgrid" id="hotelsGrid"></div>
-  </div>
 </section>
-
-<!-- FILTER SHEET -->
-<div class="sheet-overlay" id="filterSheetOverlay" data-sheet-close="filterSheet"></div>
-<div class="sheet" id="filterSheet">
-  <div class="sheet-handle"></div>
-  <div class="sheet-head">
-    <span class="sheet-title">Sort &amp; filter</span>
-    <button class="icon-btn" data-sheet-close="filterSheet" aria-label="Close">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="sheet-body">
-    <label class="field-label">Sort by</label>
-    <select class="select-input" id="sortSelect">
-      <option value="featured">Best match</option>
-      <option value="rating">Highest rated</option>
-      <option value="priceLow">Price: low to high</option>
-      <option value="priceHigh">Price: high to low</option>
-      <option value="newest">Newest first</option>
-    </select>
-    <button class="btn-block primary" data-sheet-close="filterSheet">Apply</button>
-  </div>
-</div>
 
 <footer class="footer">
   <div class="container">

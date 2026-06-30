@@ -2,266 +2,133 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Us | StayIndia Hotel Directory</title>
-<meta name="description" content="Contact StayIndia. For traveller support, hotel listing enquiries, or partnerships. We respond within 24 hours.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FBF9F6">
+<title>Contact — HotelRadar</title>
+<meta name="description" content="Get in touch with the HotelRadar team.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="preconnect" href="https://www.gstatic.com">
-<link rel="preconnect" href="https://firebaseio.com">
-<link rel="dns-prefetch" href="https://ipapi.co">
-<link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
-<script src="theme.js"></script>
 </head>
 <body>
 
-<button class="back-to-top" id="backToTop" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-</button>
-
-<header class="navbar" id="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="nav-logo"><div class="logo-mark">S</div><div class="logo-text-wrap"><span class="logo-main">StayIndia</span><span class="logo-sub">Hotel Directory</span></div></a>
-    <nav class="nav-links">
-      <a href="hotels.html" class="nav-link">Browse Hotels</a>
-      <a href="cities.html" class="nav-link">Cities</a>
-      <a href="about.html" class="nav-link">About</a>
-      <a href="contact.html" class="nav-link active">Contact</a>
-    </nav>
-    <div class="nav-actions">
-      <button class="btn-ghost" onclick="openAuth('login')">Sign In</button>
-      <button class="btn-primary ripple" onclick="openAuth('register')">Join Free</button>
-    </div>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <nav>
-      <a href="hotels.html" class="mobile-link">🏨 Browse Hotels</a>
-      <a href="cities.html" class="mobile-link">🗺️ Cities</a>
-      <a href="about.html" class="mobile-link">ℹ️ About</a>
-      <a href="contact.html" class="mobile-link">📞 Contact</a>
-    </nav>
-    <div class="mobile-auth">
-      <button class="btn-ghost btn-full" onclick="openAuth('login')">Sign In</button>
-      <button class="btn-primary btn-full ripple" onclick="openAuth('register')">Join Free</button>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">H</div>
+      <span class="brand-name">HotelRadar</span>
+    </a>
+    <div class="topbar-actions">
+      <a href="wishlist.html" class="icon-btn" aria-label="My wishlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="badge-dot" id="topbarWishlistDot" style="display:none"></span>
+      </a>
+      <button class="icon-btn" id="menuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
     </div>
   </div>
 </header>
 
-<section class="page-hero">
-  <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> › <span style="color:var(--saffron)">Contact</span></div>
-    <h1>Get In Touch</h1>
-    <p style="color:var(--gray-400);font-size:.95rem;margin-top:.5rem">We respond to all enquiries within 24 hours · Mon–Sat, 9am–7pm IST</p>
+<div class="menu-overlay" id="menuOverlay"></div>
+<nav class="menu-panel" id="menuPanel" aria-label="Site menu">
+  <div class="menu-head">
+    <span class="menu-head-title">Menu</span>
+    <button class="icon-btn" id="menuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
-</section>
-
-<section style="padding:3rem 0 6rem">
-  <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start;max-width:1000px;margin:0 auto">
-
-      <!-- LEFT: Contact Info -->
-      <div>
-        <!-- Cards -->
-        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem">
-          <a href="tel:+911234567890" style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-lg);padding:1.25rem;display:flex;align-items:center;gap:1rem;transition:all .3s;cursor:pointer" onmouseover="this.style.borderColor='rgba(255,122,0,.35)'" onmouseout="this.style.borderColor='var(--navy-border)'">
-            <div style="width:48px;height:48px;background:var(--saffron-dim);border:1px solid rgba(255,122,0,.2);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0">📞</div>
-            <div>
-              <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:.2rem">Phone / WhatsApp</div>
-              <div style="font-weight:700;color:var(--white)">+91 12345 67890</div>
-              <div style="font-size:.78rem;color:var(--gray-400)">Mon–Sat, 9am–7pm IST</div>
-            </div>
-          </a>
-
-          <a href="mailto:hello@stayindia.com" style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-lg);padding:1.25rem;display:flex;align-items:center;gap:1rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(255,122,0,.35)'" onmouseout="this.style.borderColor='var(--navy-border)'">
-            <div style="width:48px;height:48px;background:var(--saffron-dim);border:1px solid rgba(255,122,0,.2);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0">✉️</div>
-            <div>
-              <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:.2rem">General Email</div>
-              <div style="font-weight:700;color:var(--white)">hello@stayindia.com</div>
-              <div style="font-size:.78rem;color:var(--gray-400)">Replies within 24 hours</div>
-            </div>
-          </a>
-
-          <a href="mailto:hotels@stayindia.com" style="background:var(--navy-card);border:1px solid rgba(212,175,55,.2);border-radius:var(--r-lg);padding:1.25rem;display:flex;align-items:center;gap:1rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.borderColor='rgba(212,175,55,.2)'">
-            <div style="width:48px;height:48px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0">🏨</div>
-            <div>
-              <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-lite);margin-bottom:.2rem">Hotel Owner Support</div>
-              <div style="font-weight:700;color:var(--white)">hotels@stayindia.com</div>
-              <div style="font-size:.78rem;color:var(--gray-400)">Listing, billing & account queries</div>
-            </div>
-          </a>
-
-          <a href="https://wa.me/911234567890" target="_blank" rel="noopener" style="background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.2);border-radius:var(--r-lg);padding:1.25rem;display:flex;align-items:center;gap:1rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(37,211,102,.4)'" onmouseout="this.style.borderColor='rgba(37,211,102,.2)'">
-            <div style="width:48px;height:48px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.2);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0">💬</div>
-            <div>
-              <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#25D366;margin-bottom:.2rem">WhatsApp</div>
-              <div style="font-weight:700;color:var(--white)">+91 12345 67890</div>
-              <div style="font-size:.78rem;color:var(--gray-400)">Fastest response — usually within 2 hours</div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Quick Links -->
-        <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-lg);padding:1.5rem">
-          <h4 style="font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:1rem">Quick Links</h4>
-          <div style="display:flex;flex-direction:column;gap:.65rem">
-            <a href="hotels.html" style="font-size:.875rem;color:rgba(255,255,255,.55);transition:color .3s;display:flex;align-items:center;gap:.5rem" onmouseover="this.style.color='var(--saffron)'" onmouseout="this.style.color='rgba(255,255,255,.55)'">🏨 Browse All Hotels →</a>
-            <a href="cities.html" style="font-size:.875rem;color:rgba(255,255,255,.55);transition:color .3s;display:flex;align-items:center;gap:.5rem" onmouseover="this.style.color='var(--saffron)'" onmouseout="this.style.color='rgba(255,255,255,.55)'">🗺️ All Indian Cities →</a>
-            <a href="about.html" style="font-size:.875rem;color:rgba(255,255,255,.55);transition:color .3s;display:flex;align-items:center;gap:.5rem" onmouseover="this.style.color='var(--saffron)'" onmouseout="this.style.color='rgba(255,255,255,.55)'">ℹ️ About StayIndia →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT: Form -->
-      <div style="background:var(--navy-card);border:1px solid var(--navy-border);border-radius:var(--r-xl);padding:2.5rem;box-shadow:var(--sh-card)">
-        <h2 style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);margin-bottom:.5rem">Send Us a Message</h2>
-        <p style="font-size:.875rem;color:var(--gray-400);margin-bottom:1.75rem">Fill the form and we'll get back to you within 24 hours.</p>
-
-        <form id="contactForm" style="display:flex;flex-direction:column;gap:1.1rem" novalidate>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-            <div class="form-field">
-              <label>Full Name *</label>
-              <input type="text" class="form-input" name="name" placeholder="Ravi Kumar" required>
-            </div>
-            <div class="form-field">
-              <label>Phone Number</label>
-              <input type="tel" class="form-input" name="phone" placeholder="+91 98765 43210">
-            </div>
-          </div>
-          <div class="form-field">
-            <label>Email Address *</label>
-            <input type="email" class="form-input" name="email" placeholder="your@email.com" required>
-          </div>
-          <div class="form-field">
-            <label>I am a…</label>
-            <select class="form-input" name="type" id="enquiryType" onchange="handleEnquiryType(this.value)">
-              <option value="traveller">Traveller looking for hotels</option>
-              <option value="hotel-owner">Hotel owner wanting to list</option>
-              <option value="hotel-listing">Existing listing — billing query</option>
-              <option value="claim-hotel">Claiming my hotel listing</option>
-              <option value="report">Reporting incorrect information</option>
-              <option value="partnership">Partnership / Media enquiry</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <!-- Hotel name field (shown for owners) -->
-          <div class="form-field" id="hotelNameField" style="display:none">
-            <label>Hotel Name</label>
-            <input type="text" class="form-input" name="hotelName" placeholder="Your hotel name">
-          </div>
-          <div class="form-field">
-            <label>Message *</label>
-            <textarea class="form-input" name="message" rows="5" placeholder="Tell us how we can help you…" required style="resize:vertical;min-height:120px"></textarea>
-          </div>
-          <button type="submit" class="btn-primary ripple btn-full" style="padding:.95rem;font-size:1rem">
-            Send Message →
-          </button>
-          <p style="font-size:.75rem;color:var(--gray-400);text-align:center">
-            We typically respond within 24 hours · Mon–Sat, 9am–7pm IST
-          </p>
-        </form>
-      </div>
-
+  <div class="menu-theme-row">
+    <span class="menu-theme-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      Night mode
+    </span>
+    <div class="theme-switch" id="themeSwitch" role="switch" aria-checked="false" aria-label="Toggle night mode">
+      <div class="theme-switch-knob"></div>
     </div>
   </div>
-</section>
-
-<!-- AUTH MODAL -->
-<div class="modal-overlay" id="authModal" style="display:none" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeAuth()">✕</button>
-    <div class="modal-tabs">
-      <button class="modal-tab active" id="loginTab" onclick="switchAuthTab('login')">Sign In</button>
-      <button class="modal-tab" id="registerTab" onclick="switchAuthTab('register')">Join Free</button>
-    </div>
-    <div id="loginForm" class="auth-form">
-      <div class="auth-google" onclick="googleLogin()"><svg viewBox="0 0 24 24" width="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Continue with Google</div>
-      <div class="auth-divider"><span>or email</span></div>
-      <div class="form-field"><label>Email</label><input type="email" class="form-input" placeholder="your@email.com"></div>
-      <div class="form-field"><label>Password</label><input type="password" class="form-input"></div>
-      <button class="btn-primary ripple btn-full">Sign In</button>
-    </div>
-    <div id="registerForm" class="auth-form" style="display:none">
-      <div class="auth-google" onclick="googleLogin()"><svg viewBox="0 0 24 24" width="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Continue with Google</div>
-      <div class="auth-divider"><span>or email</span></div>
-      <div class="form-field"><label>Full Name</label><input type="text" class="form-input"></div>
-      <div class="form-field"><label>Email</label><input type="email" class="form-input"></div>
-      <div class="form-field"><label>Password</label><input type="password" class="form-input"></div>
-      <button class="btn-primary ripple btn-full">Create Account</button>
-    </div>
+  <div class="menu-list">
+    <a href="index.html" class="menu-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Home
+    </a>
+    <a href="hotels.html" class="menu-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+      Browse hotels
+    </a>
+    <a href="wishlist.html" class="menu-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      My wishlist
+      <span class="count-pill" id="menuWishlistCount" style="display:none">0</span>
+    </a>
+    <a href="about.html" class="menu-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      About us
+    </a>
+    <a href="contact.html" class="menu-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Contact
+    </a>
   </div>
+  <div class="menu-foot">HotelRadar · Made in India</div>
+</nav>
+
+<div class="container" style="padding-top:18px">
+  <h1 class="section-title" style="font-size:22px">Get in touch</h1>
+  <div class="section-sub" style="margin-top:2px">We usually reply within 24 hours</div>
 </div>
+
+<section class="section">
+  <div class="container">
+    <form id="contactForm" style="display:flex; flex-direction:column; gap:14px; max-width:480px">
+      <div>
+        <label class="field-label">Your name</label>
+        <input type="text" class="select-input" placeholder="Full name" required>
+      </div>
+      <div>
+        <label class="field-label">Email</label>
+        <input type="email" class="select-input" placeholder="you@example.com" required>
+      </div>
+      <div>
+        <label class="field-label">Message</label>
+        <textarea class="select-input" rows="4" placeholder="How can we help?" style="resize:vertical" required></textarea>
+      </div>
+      <button type="submit" class="btn-block primary" style="width:auto; padding:12px 24px">Send message</button>
+    </form>
+  </div>
+</section>
 
 <footer class="footer">
   <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="footer-logo"><div class="logo-mark">S</div><span>StayIndia</span></a>
-        <p>India's most trusted hotel directory.</p>
-      </div>
-      <div class="footer-col"><h4>For Travellers</h4><ul>
-        <li><a href="hotels.html">Browse Hotels</a></li>
-        <li><a href="cities.html">All Cities</a></li>
-      </ul></div>
-      <div class="footer-col"><h4>Company</h4><ul>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Terms of Use</a></li>
-      </ul></div>
-      <div class="footer-col"><h4>Help</h4><ul>
-        <li><a href="contact.html?type=traveller">Traveller Support</a></li>
-        <li><a href="contact.html?type=hotel-owner">Hotel Owner Help</a></li>
-        <li><a href="contact.html?type=report">Report an Issue</a></li>
-      </ul></div>
+    <div class="footer-brand">
+      <div class="brand-mark">H</div>
+      <span class="brand-name">HotelRadar</span>
     </div>
-    <div class="footer-bottom"><p>© 2026 StayIndia Hotel Directory · Made with ❤️ in India</p></div>
+    <p class="footer-tag">India's hotel directory. Browse verified listings across 500+ cities, completely free.</p>
+    <div class="footer-links">
+      <a href="hotels.html">Browse hotels</a>
+      <a href="wishlist.html">My wishlist</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <p class="footer-bottom">© 2026 HotelRadar · Made in India</p>
   </div>
 </footer>
 
-<script src="firebase-config.js"></script>
+<button class="totop" id="totop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
 <script src="data.js"></script>
+<script src="location.js"></script>
 <script src="app.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  initNavbar();
-  initMobileMenu();
-  initBackToTop();
-  initScrollReveal();
-
-  // Pre-fill subject from URL
-  const params  = new URLSearchParams(window.location.search);
-  const subject = params.get('subject') || params.get('type');
-  if (subject) {
-    const sel = document.getElementById('enquiryType');
-    if (sel) {
-      sel.value = subject;
-      handleEnquiryType(subject);
-    }
-  }
-
-  // Form submit
-  document.getElementById('contactForm')?.addEventListener('submit', e => {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
-    setTimeout(() => {
-      showToast('✅ Message sent! We\'ll get back to you within 24 hours.', 'success');
-      e.target.reset();
-      btn.textContent = 'Send Message →';
-      btn.disabled = false;
-      document.getElementById('hotelNameField').style.display = 'none';
-    }, 1400);
-  });
+document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  showToast('Message sent — thanks!');
+  this.reset();
 });
-
-function handleEnquiryType(val) {
-  const hotelField = document.getElementById('hotelNameField');
-  const showHotel  = ['hotel-owner','hotel-listing','claim-hotel'].includes(val);
-  if (hotelField) hotelField.style.display = showHotel ? 'flex' : 'none';
-}
 </script>
 </body>
 </html>
