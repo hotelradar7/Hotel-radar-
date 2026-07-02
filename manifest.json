@@ -1,11 +1,11 @@
 {
-  "name": "StayIndia Hotel Directory",
-  "short_name": "StayIndia",
-  "description": "India's most trusted hotel directory. Find verified hotels across 500+ cities.",
+  "name": "HotelRadar — Find Verified Hotels Across India",
+  "short_name": "HotelRadar",
+  "description": "HotelRadar is India's hotel directory. Search verified hotels by name, city, or state across 500+ Indian cities. Browse real photos and details — completely free.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#0A0F1E",
-  "theme_color": "#FF7A00",
+  "background_color": "#FBF9F6",
+  "theme_color": "#E8631C",
   "orientation": "portrait-primary",
   "icons": [
     {

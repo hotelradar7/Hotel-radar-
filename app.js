@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (page === 'hotels.html') initHotelsPage();
   if (page === 'hotel-detail.html') initDetailPage();
   if (page === 'wishlist.html') initWishlistPage();
+  if (page === 'cities.html') initCitiesPage();
+  if (page === 'register-hotel.html') initRegisterPage();
 });
 
 function currentPage() {
@@ -388,8 +390,8 @@ function initHomePage() {
   const catRow = document.getElementById('catScroll');
   if (catRow) catRow.innerHTML = CATEGORIES.map(renderCategoryItem).join('');
 
-  loadSection('featuredGrid', getFeaturedHotels(6));
-  loadSection('trendingGrid', getTrendingHotels(3));
+  renderSection('featuredGrid', getFeaturedHotels(6));
+  renderSection('trendingGrid', getTrendingHotels(3));
 
   const cityGrid = document.getElementById('citiesGrid');
   if (cityGrid) cityGrid.innerHTML = CITIES.slice(0, 4).map(renderCityCard).join('');
@@ -402,7 +404,7 @@ function initHomePage() {
   initReveal();
 }
 
-function loadSection(gridId, hotels) {
+function renderSection(gridId, hotels) {
   const grid = document.getElementById(gridId);
   if (!grid) return;
   grid.innerHTML = renderSkeletonCards(Math.min(hotels.length, 3));
@@ -412,6 +414,8 @@ function loadSection(gridId, hotels) {
     initReveal();
   }, 250);
 }
+
+function loadSection(gridId, hotels) { renderSection(gridId, hotels); }
 
 /* ============================================================
    SMART LOCATION SECTION (optional — only if location.js loaded)
@@ -647,6 +651,84 @@ function initDetailTabs() {
       const panel = document.getElementById('dpanel-' + tab.dataset.tab);
       if (panel) panel.classList.add('active');
     });
+  });
+}
+
+/* ============================================================
+   CITIES PAGE
+   ============================================================ */
+function initCitiesPage() {
+  const list = document.getElementById('citiesList');
+  if (!list) return;
+
+  const states = [...new Set(CITIES.map(c => c.state))].sort();
+
+  const renderAll = (query = '') => {
+    const q = query.toLowerCase().trim();
+    list.innerHTML = states.map(state => {
+      const stateCities = CITIES.filter(c => c.state === state &&
+        (c.name.toLowerCase().includes(q) || state.toLowerCase().includes(q)));
+
+      if (!stateCities.length) return '';
+
+      return `
+        <div class="state-group" style="margin-bottom:32px">
+          <div class="section-top" style="margin-bottom:12px; border-bottom:1px solid var(--line); padding-bottom:8px">
+            <div class="section-title" style="font-size:17px">📍 ${state}</div>
+            <div class="section-sub">${stateCities.length} cities</div>
+          </div>
+          <div class="cgrid">
+            ${stateCities.map(renderCityCard).join('')}
+          </div>
+        </div>`;
+    }).join('');
+    initReveal();
+  };
+
+  renderAll();
+
+  const searchInput = document.getElementById('citySearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => renderAll(searchInput.value));
+  }
+}
+
+/* ============================================================
+   REGISTER PAGE
+   ============================================================ */
+function initRegisterPage() {
+  const form = document.getElementById('hotelRegistrationForm');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const data = new FormData(form);
+    const hotel = Object.fromEntries(data.entries());
+
+    if (window.FB && window.FB.submitHotelToRTDB) {
+      try {
+        await FB.submitHotelToRTDB(hotel);
+        showToast('Application submitted! We will contact you soon.');
+        form.reset();
+      } catch (err) {
+        showToast('Error submitting. Please try again.');
+      }
+    } else {
+      // Mock success if Firebase not available
+      setTimeout(() => {
+        showToast('Application submitted (Mock)!');
+        form.reset();
+      }, 1000);
+    }
+
+    btn.disabled = false;
+    btn.textContent = originalText;
   });
 }
 
