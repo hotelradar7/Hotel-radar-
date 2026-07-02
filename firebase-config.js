@@ -1,5 +1,5 @@
 /**
- * StayIndia — Hotel Directory
+ * HotelRadar — Hotel Directory
  * firebase-config.js — LIVE Firebase Configuration
  *
  * Project: hotel-radar-india
@@ -122,7 +122,7 @@ function initFirebase() {
     window.FIREBASE_AVAILABLE = true;
 
     console.log(
-      '%c🏨 StayIndia · Firebase Connected\n' +
+      '%c🏨 HotelRadar · Firebase Connected\n' +
       '%cProject: hotel-radar-india · RTDB: hotel-radar-india-default-rtdb',
       'color:#FF7A00;font-weight:bold;font-size:13px',
       'color:#10B981;font-size:11px'
@@ -132,7 +132,7 @@ function initFirebase() {
     window.dispatchEvent(new CustomEvent('firebase:ready'));
 
     /* Start real-time hotel listener on homepage */
-    if (document.getElementById('smartHotelsGrid')) {
+    if (document.getElementById('smartGrid')) {
       listenToApprovedHotels();
     }
 
@@ -196,7 +196,7 @@ function listenToApprovedHotels() {
         if (cached) {
           const resolution = LocationEngine.resolveHotelsByLocation(cached, { limit: 12 });
           if (window.LS) window.LS.currentResolution = resolution;
-          const grid = document.getElementById('smartHotelsGrid');
+          const grid = document.getElementById('smartGrid');
           if (grid && typeof renderHotelCard === 'function') {
             grid.innerHTML = resolution.hotels.map(renderHotelCard).join('');
             typeof initScrollReveal === 'function' && initScrollReveal();
